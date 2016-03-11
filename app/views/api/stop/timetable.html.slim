@@ -1,0 +1,12 @@
+body
+  table
+    thead
+      td
+        | Маршрут
+      td 
+        | Буде через
+    tbody
+    - @response.each do |item|
+      tr
+        td = item[:route]
+        td = item[:time_left]
