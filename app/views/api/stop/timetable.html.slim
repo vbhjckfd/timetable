@@ -2,7 +2,7 @@ meta name="viewport" content="user-scalable=no,initial-scale=1,maximum-scale=1"
 body
   table style="margin: 0 auto"
     thead style="font-weight: bold;"
-      td
+      td colspan=2
         | Маршрут
       td 
         | Через
@@ -10,5 +10,7 @@ body
     - @response.each do |item|
       - row_color = [cycle("background-color:#f1f1f1", "")].first
       tr style=row_color
-        td = strip_route(item[:route])
-        td = round_time(item[:time_left])
+        td style="text-align:center"
+          img src=image_url(item[:vehicle_type]) height='35px'
+        td = "#{strip_route(item[:route])} #{item[:end_stop]}"
+        td = round_time(item[:seconds_left])
