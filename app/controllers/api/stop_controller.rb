@@ -3,6 +3,8 @@ require 'nokogiri'
 
 class Api::StopController < ApplicationControllerApi
 
+  include Api::StopHelper
+
   TIMETABLE_API_CALL = 'http://82.207.107.126:13541/SimpleRIDE/%{company_name}/SM.WebApi/api/stops/?code=%{code}'
 
   def timetable

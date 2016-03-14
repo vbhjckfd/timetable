@@ -10,5 +10,5 @@ body
     - @response.each do |item|
       - row_color = [cycle("background-color:#f1f1f1", "")].first
       tr style=row_color
-        td = item[:route]
-        td = item[:time_left].strftime("%-M хв %S с")
+        td = strip_route(item[:route])
+        td = round_time(item[:time_left])
