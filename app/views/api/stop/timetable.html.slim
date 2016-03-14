@@ -1,13 +1,14 @@
 meta name="viewport" content="user-scalable=no,initial-scale=1,maximum-scale=1"
 body
   table style="margin: 0 auto"
-    thead
+    thead style="font-weight: bold;"
       td
         | Маршрут
       td 
-        | Буде через
+        | Через
     tbody
     - @response.each do |item|
-      tr
+      - row_color = [cycle("background-color:#f1f1f1", "")].first
+      tr style=row_color
         td = item[:route]
-        td = item[:time_left]
+        td = item[:time_left].strftime("%-M хв %S с")

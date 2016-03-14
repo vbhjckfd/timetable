@@ -22,7 +22,7 @@ class Api::StopController < ApplicationControllerApi
     data.sort! { |a,b| a['TimeToPoint'] <=> b['TimeToPoint'] }
 
     data.slice(0, 5).each do |item|
-        @response << {route: item["RouteName"], time_left: Time.at(item["TimeToPoint"]).utc.strftime("%-Mm %Ss")}
+        @response << {route: item["RouteName"], time_left: Time.at(item["TimeToPoint"]).utc}
     end
 
     case params[:format]
