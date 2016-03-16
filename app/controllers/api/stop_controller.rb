@@ -1,9 +1,7 @@
 require 'json'
 require 'nokogiri'
 
-class Api::StopController < ApplicationControllerApi
-
-  include Api::StopHelper
+class Api::StopController < ApplicationController
 
   TIMETABLE_API_CALL = 'http://82.207.107.126:13541/SimpleRIDE/%{company_name}/SM.WebApi/api/stops/?code=%{code}'
 
@@ -38,8 +36,6 @@ class Api::StopController < ApplicationControllerApi
     case params[:format]
       when 'xml' 
         render xml: @response
-      when 'html'
-        render 'api/stop/timetable'
       else 
         render json: @response
     end
