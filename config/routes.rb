@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
 
+  resources :stops do 
+
+  end
   namespace :api do
     get 'timetable/:stop_id' => 'stop#timetable'
   end

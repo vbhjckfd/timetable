@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Stops</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Longitude</th>
+      <th>Latitude</th>
+      <th>External Id</th>
+      <th>Code</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @stops.each do |stop| %>
+      <tr>
+        <td><%= stop.name %></td>
+        <td><%= stop.longitude %></td>
+        <td><%= stop.latitude %></td>
+        <td><%= stop.external_id %></td>
+        <td><%= stop.code %></td>
+        <td><%= link_to 'Show', stop %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
