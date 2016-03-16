@@ -6,11 +6,11 @@ module StopsHelper
 
   def image_url(type)
     case type
-      when :bus
+      when 'bus'
         'https://cdn4.iconfinder.com/data/icons/dot/64/bus.png'
-      when :tram
+      when 'tram'
         'https://cdn4.iconfinder.com/data/icons/aiga-symbol-signs/475/aiga_railtransportion-64.png'
-      when :trol
+      when 'trol'
         'https://cdn2.iconfinder.com/data/icons/windows-8-metro-style/64/trolleybus.png'
     end
   end
@@ -22,5 +22,5 @@ module StopsHelper
     disp_time = time + (time.sec > 30 ? 1 : 0).minute
     disp_time.strftime("%-M хв")
   end
-  
+
 end
