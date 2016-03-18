@@ -28,7 +28,11 @@ class Api::StopController < ApplicationController
         raw_data = %x(curl --silent "#{url}" -H "Accept: application/xml")
 
         n = Nokogiri::XML(raw_data)
-        data.concat JSON.parse(n.remove_namespaces!.xpath('//string').text)
+        begin
+          data.concat JSON.parse(n.remove_namespaces!.xpath('//string').text)
+        rescue JSON::ParserError => e
+          
+        end
     end
 
     return render(status: :bad_request, text: "No stop with code #{stop_id}") if data.empty?
