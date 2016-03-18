@@ -1,0 +1,47 @@
+javascript:
+  function redirectToClosestStop(position) {
+    $.ajax({
+      url: "api/closest",
+      data: { longitude: position.coords.longitude, latitude: position.coords.latitude }
+    }).done(function(data) {
+      window.location.pathname = 'stops/' + data.code;
+    }).fail(function(data){
+      message = 'Some temporary problemns...';
+      if(404 == data.status) {
+        message = 'No stop near you, sorry :(';
+      }
+      alert(message);
+    })
+  }
+
+  $(document).ready(function() { 
+
+    $('a#geo-lnk').click(function(){
+      navigator.geolocation.getCurrentPosition(redirectToClosestStop);
+      return false;
+    });
+    
+    $('form#stop-code-form').submit(function(){
+      code = $('input#stop-code').val()
+      if(code) {
+        window.location.pathname = 'stops/' + code;
+      }
+      return false;
+    })
+
+  });
+  
+
+body style="text-align: center"
+  p
+    a#geo-lnk href=""
+      | Геолокація
+
+  p
+    | ... або ...
+
+  form#stop-code-form
+    label for="stop-code"
+      | Код зупинки
+    input#stop-code style="margin: 0 15px 0 15px"
+    input type="submit" value=">"

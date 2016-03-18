@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  root 'stops#closest'
+
   resources :stops do 
 
   end

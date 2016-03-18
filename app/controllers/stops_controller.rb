@@ -13,6 +13,10 @@ class StopsController < ApplicationController
     @timetable = get_stop_timetable @stop
   end
 
+  def closest
+    
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_stop
