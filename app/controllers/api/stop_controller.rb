@@ -5,6 +5,18 @@ class Api::StopController < ApplicationController
 
   TIMETABLE_API_CALL = 'http://82.207.107.126:13541/SimpleRIDE/%{company_name}/SM.WebApi/api/stops/?code=%{code}'
 
+  def closest
+    coords = params.slice(:longitude, :latitude)
+    render(status: :bad_request, text: "No coordinates provided (longitude, latitude)") if coords.count != 2
+
+    point = Geokit::LatLng.new(params[:latitude], params[:longitude])
+    stop = Stop.in_lviv.within(0.05, origin: point).by_distance(origin: point).limit(1).first
+
+    return render(status: :not_found, text: "No stop around you: <a target='_blank' href='https://maps.google.com?q=#{coords[:latitude]},#{coords[:longitude]}'>#{coords[:latitude]}, #{coords[:longitude]}</a>") if stop.nil?
+
+    render json: {code: stop.code, name: stop.name}
+  end
+
   def timetable
     stop_id = params[:stop_id].rjust(4, '0')
 
@@ -18,6 +30,8 @@ class Api::StopController < ApplicationController
         n = Nokogiri::XML(raw_data)
         data.concat JSON.parse(n.remove_namespaces!.xpath('//string').text)
     end
+
+    return render(status: :bad_request, text: "No stop with code #{stop_id}") if data.empty?
 
     data.sort! { |a,b| a['TimeToPoint'] <=> b['TimeToPoint'] }
 
