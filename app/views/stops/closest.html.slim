@@ -11,14 +11,23 @@ javascript:
         window.location.pathname = 'stops/' + data[0].code;  
       }
       else {
-        $('div#map').html(data.map(function(item){ return '<a href="stops/'+ item.code +'">'+ item.name +'</a>' }).join('<br />') + '<br /> Точність: ' + position.coords.accuracy + 'м' ).css({'padding-bottom' : '15px'})
+        var html = ''
+        html += data.map(function(item){ return '<a href="stops/'+ item.code +'">'+ item.name +'</a>' }).join('<br />')
+
+        $('div#map').append(html)
       }
     }).fail(function(data){
       message = 'Some temporary problemns...';
       if(404 == data.status) {
-        message = 'No stop near you, sorry :(';
+        message = 'Поруч не знайдено зупинок, вибачте :(';
       }
       alert(message);
+      html = '<p>'+ message +'</p>'
+      $('div#map').append(html)
+    }).always(function(data){
+        var html = '<p>Ваш пристрій вважає, що Ви <a href="https://maps.google.com?q='+ position.coords.latitude +','+ position.coords.longitude +'">тут</a></p>'
+        html += '<p>Точність: ' + position.coords.accuracy + 'м</p>'
+        $('div#map').append(html)
     })
   }
 
