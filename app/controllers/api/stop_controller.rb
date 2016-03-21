@@ -7,14 +7,15 @@ class Api::StopController < ApplicationController
 
   def closest
     coords = params.slice(:longitude, :latitude)
+    accuracy = params[:accuracy] || 10
     render(status: :bad_request, text: "No coordinates provided (longitude, latitude)") if coords.count != 2
 
     point = Geokit::LatLng.new(params[:latitude], params[:longitude])
-    stop = Stop.in_lviv.within(0.05, origin: point).by_distance(origin: point).limit(1).first
+    stops = Stop.in_lviv.within(accuracy.to_f / 1000, origin: point).by_distance(origin: point).limit(5).map{|stop| {code: stop.code, name: stop.name} }
 
-    return render(status: :not_found, text: "No stop around you: <a target='_blank' href='https://maps.google.com?q=#{coords[:latitude]},#{coords[:longitude]}'>#{coords[:latitude]}, #{coords[:longitude]}</a>") if stop.nil?
+    return render(status: :not_found, text: "No stops around you: <a target='_blank' href='https://maps.google.com?q=#{coords[:latitude]},#{coords[:longitude]}'>#{coords[:latitude]}, #{coords[:longitude]}</a>") if stops.empty?
 
-    render json: {code: stop.code, name: stop.name}
+    render json: stops
   end
 
   def timetable
