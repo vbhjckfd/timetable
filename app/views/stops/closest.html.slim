@@ -1,3 +1,5 @@
+- content_for :title, 'Онлайн табло'
+
 javascript:
   function redirectToClosestStop(position) {
     $.ajax({
@@ -28,7 +30,8 @@ javascript:
     $('a#geo-lnk').click(function(){
       $('div#map').html('')
       $('img#spinner').show();
-      navigator.geolocation.getCurrentPosition(redirectToClosestStop);
+      var options = {enableHighAccuracy: true, timeout: 5000, maximumAge: 0};
+      navigator.geolocation.getCurrentPosition(redirectToClosestStop, function(){}, options);
       return false;
     });
     
