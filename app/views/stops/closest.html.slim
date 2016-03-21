@@ -2,9 +2,14 @@ javascript:
   function redirectToClosestStop(position) {
     $.ajax({
       url: "api/closest",
-      data: { longitude: position.coords.longitude, latitude: position.coords.latitude }
+      data: { longitude: position.coords.longitude, latitude: position.coords.latitude, accuracy: position.coords.accuracy }
     }).done(function(data) {
-      window.location.pathname = 'stops/' + data.code;
+      if(1 == data.length) {
+        window.location.pathname = 'stops/' + data[0].code;  
+      }
+      else {
+        $('div#map').html(data.map(function(item){ return '<a href="stops/'+ item.code +'">'+ item.name +'</a>' }).join('<br />') + '<br /> Точність: ' + position.coords.accuracy + 'м' ).css({'padding-bottom' : '15px'})
+      }
     }).fail(function(data){
       message = 'Some temporary problemns...';
       if(404 == data.status) {
@@ -15,8 +20,12 @@ javascript:
   }
 
   $(document).ready(function() { 
+    if(navigator.geolocation) {
+      $('div#geo-available').show()
+    }
 
     $('a#geo-lnk').click(function(){
+      $('div#map').html('')
       navigator.geolocation.getCurrentPosition(redirectToClosestStop);
       return false;
     });
@@ -33,15 +42,23 @@ javascript:
   
 
 body style="text-align: center"
-  p
-    a#geo-lnk href=""
-      | Геолокація
+  div#geo-available style="display: none"
+    p
+      a#geo-lnk href=""
+        | Геолокація
 
-  p
-    | ... або ...
+    div#map
 
-  form#stop-code-form
-    label for="stop-code"
-      | Код зупинки
-    input#stop-code style="margin: 0 15px 0 15px"
-    input type="submit" value=">"
+    p
+      | ... або ...
+
+
+
+  div
+    form#stop-code-form
+      label for="stop-code"
+        | Код зупинки
+      br
+      input#stop-code style="width: 50px; margin: 15px 0 15px 0"
+      br
+      input type="submit" value=">" style="width: 50px"
