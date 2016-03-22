@@ -3,25 +3,24 @@
 script src="https://api.mapbox.com/mapbox.js/v2.3.0/mapbox.js"
 link href="https://api.mapbox.com/mapbox.js/v2.3.0/mapbox.css" rel='stylesheet'
 
-body style="text-align: center"
-  div#geo-available style="display: none"
-    p
-      a#geo-lnk href=""
-        | Геолокація
-      img#spinner style="margin: 6px 0 0 15px; display: none" width="15px" src="https://i1.wp.com/cdnjs.cloudflare.com/ajax/libs/galleriffic/2.0.1/css/loader.gif"
+div#geo-available style="display: none"
+  p
+    a#geo-lnk href=""
+      | Геолокація
+    img#spinner style="margin: 6px 0 0 15px; display: none" width="15px" src="https://i1.wp.com/cdnjs.cloudflare.com/ajax/libs/galleriffic/2.0.1/css/loader.gif"
 
-    div#map style="height: 450px; width:100%; display: none;"
+  div#map style="height: 450px; width:100%; display: none;"
 
-    p
-      | ... або ...
-
+  p
+    | ... або ...
 
 
-  div
-    form#stop-code-form
-      label for="stop-code"
-        | Код зупинки
-      br
-      input#stop-code style="width: 50px; margin: 15px 0 15px 0"
-      br
-      input type="submit" value=">" style="width: 50px"
+
+div
+  form#stop-code-form
+    label for="stop-code"
+      | Код зупинки
+    br
+    input#stop-code style="width: 50px; margin: 15px 0 15px 0"
+    br
+    input type="submit" value=">" style="width: 50px"
