@@ -1,59 +1,7 @@
 - content_for :title, 'Онлайн табло'
 
-javascript:
-  function redirectToClosestStop(position) {
-    $.ajax({
-      url: "api/closest",
-      data: { longitude: position.coords.longitude, latitude: position.coords.latitude, accuracy: position.coords.accuracy }
-    }).done(function(data) {
-      $('img#spinner').hide()
-      if(1 == data.length) {
-        window.location.pathname = 'stops/' + data[0].code;  
-      }
-      else {
-        var html = ''
-        html += data.map(function(item){ return '<a href="stops/'+ item.code +'">'+ item.name +'</a>' }).join('<br />')
-
-        $('div#map').append(html)
-      }
-    }).fail(function(data){
-      message = 'Some temporary problemns...';
-      if(404 == data.status) {
-        message = 'Поруч не знайдено зупинок, вибачте :(';
-      }
-      alert(message);
-      html = '<p>'+ message +'</p>'
-      $('div#map').append(html)
-    }).always(function(data){
-        var html = '<p>Ваш пристрій вважає, що Ви <a href="https://maps.google.com?q='+ position.coords.latitude +','+ position.coords.longitude +'">тут</a></p>'
-        html += '<p>Точність: ' + position.coords.accuracy + 'м</p>'
-        $('div#map').append(html)
-    })
-  }
-
-  $(document).ready(function() { 
-    if(navigator.geolocation) {
-      $('div#geo-available').show()
-    }
-
-    $('a#geo-lnk').click(function(){
-      $('div#map').html('')
-      $('img#spinner').show();
-      var options = {enableHighAccuracy: true, timeout: 5000, maximumAge: 0};
-      navigator.geolocation.getCurrentPosition(redirectToClosestStop, function(){}, options);
-      return false;
-    });
-    
-    $('form#stop-code-form').submit(function(){
-      code = $('input#stop-code').val()
-      if(code) {
-        window.location.pathname = 'stops/' + code;
-      }
-      return false;
-    })
-
-  });
-  
+script src="https://api.mapbox.com/mapbox.js/v2.3.0/mapbox.js"
+link href="https://api.mapbox.com/mapbox.js/v2.3.0/mapbox.css" rel='stylesheet'
 
 body style="text-align: center"
   div#geo-available style="display: none"
@@ -62,7 +10,7 @@ body style="text-align: center"
         | Геолокація
       img#spinner style="margin: 6px 0 0 15px; display: none" width="15px" src="https://i1.wp.com/cdnjs.cloudflare.com/ajax/libs/galleriffic/2.0.1/css/loader.gif"
 
-    div#map
+    div#map style="height: 450px; width:100%; display: none;"
 
     p
       | ... або ...
