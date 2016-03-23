@@ -1,17 +1,36 @@
 - content_for :title, @stop.name
 
+javascript:
+  $(function() {
+    $.ajax({
+      url: '/api/timetable/#{@stop.code}'
+    }).done(function(data){
+      html = ''
+      jQuery.each(data, function(index, item){
+        html += '<tr>'
+          html += '<td class="'+ item.vehicle_type +'">'
+            html += item['route'] + ' ' + item['end_stop'] + '</td>'
+          html += '<td>'+ item['time_left'] +'</td>'
+        html += '</tr>'
+      })
+      $('table tbody').html(html)
+    })
+  });
+
+css:
+  table.timetable td {text-align: left; background-repeat: no-repeat; height: 35px; padding-left: 40px; background-size: auto 35px}
+    table.timetable td.bus {background-image: url('https://cdn4.iconfinder.com/data/icons/dot/64/bus.png')}
+    table.timetable td.tram {background-image: url('https://cdn4.iconfinder.com/data/icons/aiga-symbol-signs/475/aiga_railtransportion-64.png'); background-position-x: 7px}
+    table.timetable td.trol {background-image: url('https://cdn2.iconfinder.com/data/icons/windows-8-metro-style/64/trolleybus.png')}
+
 h3 = @stop.name
-table style="margin: 0 auto"
+table.timetable style="margin: 0 auto"
   thead style="font-weight: bold;"
-    td colspan=2
+    td
       | Маршрут
     td 
       | Через
   tbody
-    - @timetable.each do |item|
-      - row_color = [cycle("background-color:#f1f1f1", "")].first
-      tr style=row_color
-        td style="text-align:center"
-          img src=image_url(item['vehicle_type']) height='35px'
-        td = "#{strip_route(item['route'])} #{item['end_stop']}"
-        td = round_time(item['seconds_left'])
+    tr.tr
+      td.td colspan="2"
+        img src="https://i1.wp.com/cdnjs.cloudflare.com/ajax/libs/galleriffic/2.0.1/css/loader.gif"

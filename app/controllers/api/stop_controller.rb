@@ -49,7 +49,7 @@ class Api::StopController < ApplicationController
       else
         :bus
       end
-      @response << {route: item["RouteName"], vehicle_type: vehicle_type, end_stop: item['IterationEnd'], seconds_left: item["TimeToPoint"]}
+      @response << {route: strip_route(item["RouteName"]), vehicle_type: vehicle_type, end_stop: item['IterationEnd'], seconds_left: item["TimeToPoint"], time_left: round_time(item["TimeToPoint"])}
     end
 
     case params[:format]
@@ -60,4 +60,21 @@ class Api::StopController < ApplicationController
     end
     
   end
+
+
+  private
+
+  def strip_route(title)
+    title.gsub(/\D/, '')
+  end
+
+  def round_time(time)
+    time = Time.at(time).utc
+    return '< 1 хв' if time.to_i < 31
+
+    disp_time = time + (time.sec > 30 ? 1 : 0).minute
+    disp_time.strftime("%-M хв")
+  end
+
+
 end
