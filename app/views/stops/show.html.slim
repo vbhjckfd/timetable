@@ -1,7 +1,7 @@
 - content_for :title, @stop.name
 
 javascript:
-  $(function() {
+  function refreshTimetable() {
     $.ajax({
       url: '/api/timetable/#{@stop.code}'
     }).done(function(data){
@@ -14,7 +14,12 @@ javascript:
         html += '</tr>'
       })
       $('table tbody').html(html)
-    })
+    })  
+  }
+
+
+  $(function() {
+    window.setInterval(refreshTimetable, 15000);
   });
 
 css:
