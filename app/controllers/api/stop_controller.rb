@@ -49,7 +49,15 @@ class Api::StopController < ApplicationController
       else
         :bus
       end
-      @response << {route: strip_route(item["RouteName"]), vehicle_type: vehicle_type, end_stop: item['IterationEnd'], seconds_left: item["TimeToPoint"], time_left: round_time(item["TimeToPoint"])}
+      @response << {
+        route: strip_route(item["RouteName"]), 
+        vehicle_type: vehicle_type, 
+        end_stop: item['IterationEnd'],
+        seconds_left: item["TimeToPoint"], 
+        time_left: round_time(item["TimeToPoint"]),
+        longitude: item['X'],
+        latitude: item['Y'],
+      }
     end
 
     case params[:format]
