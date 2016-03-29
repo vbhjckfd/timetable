@@ -10,10 +10,7 @@ $(->
         accuracy: position.coords.accuracy
     ).done((data) ->
       $('a#geo-lnk').hide()
-      if 1 == data.length
-        window.location.pathname = 'stops/' + data[0].code
-      else
-        showMap [position.coords.latitude, position.coords.longitude], data
+      showMap [position.coords.latitude, position.coords.longitude], data
 
     ).fail((data) ->
       message = 'Some temporary problems...'
