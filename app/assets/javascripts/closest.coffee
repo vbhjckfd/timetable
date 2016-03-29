@@ -20,6 +20,7 @@ $(->
       if 404 == data.status
         message = 'Поруч не знайдено зупинок, вибачте :('
       alert message
+      showMap [position.coords.latitude, position.coords.longitude]
     ).always (data) ->
       $('img#spinner').hide()
 
@@ -77,8 +78,9 @@ $(->
     options = 
       enableHighAccuracy: false
       timeout: 5000
-      maximumAge: 0
-    navigator.geolocation.getCurrentPosition redirectToClosestStop, (->
+      maximumAge: 10000
+    navigator.geolocation.getCurrentPosition redirectToClosestStop, ((error) ->
+      alert(String(error))
     ), options
     return false
 
