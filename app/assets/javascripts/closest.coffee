@@ -7,7 +7,7 @@ $(->
       data:
         longitude: position.coords.longitude
         latitude: position.coords.latitude
-        accuracy: position.coords.accuracy
+        accuracy: 100
     ).done((data) ->
       $('a#geo-lnk').hide()
       showMap [position.coords.latitude, position.coords.longitude], data
