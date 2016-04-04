@@ -73,8 +73,8 @@ $(->
   $('a#geo-lnk').click ->
     $('img#spinner').show()
     options = 
-      enableHighAccuracy: false
-      timeout: 5000
+      enableHighAccuracy: true
+      timeout: 6000
       maximumAge: 10000
     navigator.geolocation.getCurrentPosition redirectToClosestStop, ((error) ->
       alert(String(error))
