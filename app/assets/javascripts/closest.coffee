@@ -1,7 +1,25 @@
 $(->
   L.mapbox.accessToken = 'pk.eyJ1IjoidmJoamNrZmQiLCJhIjoiY2ltMjNidDRvMDBudnVvbTQ4aGQ2bTFzNiJ9.I5ym_chknrWXKf5hXD6anA';
 
-  redirectToClosestStop = (position) ->
+  map = L.map('map', {
+    minZoom: 16,
+    center: [0, 0]
+  })
+  L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(map);
+
+  map.on 'moveend', (e)->
+    center = e.target.getCenter()
+
+    $.ajax(
+      url: 'api/closest'
+      data:
+        longitude: center.lng
+        latitude: center.lat
+        accuracy: 200
+    ).done (data) ->
+      showMap null, data
+
+  showClosestStops = (position) ->
     $.ajax(
       url: 'api/closest'
       data:
@@ -23,49 +41,21 @@ $(->
 
   showMap = (me, stops) ->
     $('div#map').show()
-    map = L.mapbox.map('map', 'mapbox.streets').setView(me, 17);
 
-    geojson = {
-      type: 'FeatureCollection',
-      features: [
-        {
-          type: 'Feature',
-          properties: {
-              title: 'Ви',
-              'marker-color': '#7ec9b1',
-              'marker-size': 'large',
-              'marker-symbol': 'pitch',
-          },
-          geometry: {
-              type: 'Point',
-              coordinates: me.reverse()
-          }
-        },
-      ]
-    };
+    if me
+      map.setZoom(17).panTo(me)
+      L.marker(me).addTo(map)
 
     if stops
       jQuery.each stops, (index, value)-> 
-        geojson.features.push {
-            type: 'Feature',
-            properties: {
-                title: value.code,
-                'marker-color': '#7ec9b1',
-                'marker-size': 'large',
-                'marker-symbol': 'bus',
-                url: 'stops/' + value.code
-            },
-            geometry: {
-                type: 'Point',
-                coordinates: [value.longitude, value.latitude]
-            }
-          }
+        marker = L.marker([value.latitude, value.longitude], {
+          icon: L.icon({iconUrl: 'https://api.mapbox.com/v4/marker/pin-l-bus+fa0.png?access_token=' + L.mapbox.accessToken})
+          title: value.code,
+          url: 'stops/' + value.code
+        }).addTo(map)
 
-    markerLayer = L.mapbox.featureLayer().addTo(map);
-    markerLayer.setGeoJSON geojson
-    markerLayer.on 'click', (e) ->
-      if e.layer.feature.properties.url
-        window.location.pathname = e.layer.feature.properties.url
+        marker.on 'click', (e) ->
+          window.location.pathname = e.target.options.url
 
   if navigator.geolocation
     $('div#geo-available').show()
@@ -76,7 +66,7 @@ $(->
       enableHighAccuracy: true
       timeout: 6000
       maximumAge: 10000
-    navigator.geolocation.getCurrentPosition redirectToClosestStop, ((error) ->
+    navigator.geolocation.getCurrentPosition showClosestStops, ((error) ->
       alert(String(error))
     ), options
     return false
