@@ -54,7 +54,10 @@ $(->
           return
 
         stop_markers[value.code] = L.marker([value.latitude, value.longitude], {
-          icon: L.icon({iconUrl: 'https://api.mapbox.com/v4/marker/pin-l-bus+fa0.png?access_token=' + L.mapbox.accessToken})
+          icon: L.icon({
+            iconUrl: 'https://api.mapbox.com/v4/marker/pin-l-bus+fa0.png?access_token=' + L.mapbox.accessToken,
+            iconAnchor: [20, 50],
+          })
           title: value.code,
           url: 'stops/' + value.code
         }).addTo(map)
