@@ -7,6 +7,8 @@ $(->
   })
   L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(map);
 
+  stop_markers = {}
+
   map.on 'moveend', (e)->
     center = e.target.getCenter()
 
@@ -48,13 +50,16 @@ $(->
 
     if stops
       jQuery.each stops, (index, value)-> 
-        marker = L.marker([value.latitude, value.longitude], {
+        if value.code of stop_markers
+          return
+
+        stop_markers[value.code] = L.marker([value.latitude, value.longitude], {
           icon: L.icon({iconUrl: 'https://api.mapbox.com/v4/marker/pin-l-bus+fa0.png?access_token=' + L.mapbox.accessToken})
           title: value.code,
           url: 'stops/' + value.code
         }).addTo(map)
 
-        marker.on 'click', (e) ->
+        stop_markers[value.code].on 'click', (e) ->
           window.location.pathname = e.target.options.url
 
   if navigator.geolocation
