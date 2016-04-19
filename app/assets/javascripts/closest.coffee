@@ -2,7 +2,6 @@ $(->
   L.mapbox.accessToken = 'pk.eyJ1IjoidmJoamNrZmQiLCJhIjoiY2ltMjNidDRvMDBudnVvbTQ4aGQ2bTFzNiJ9.I5ym_chknrWXKf5hXD6anA';
 
   map = L.map('map', {
-    minZoom: 16,
     center: [0, 0]
   })
   L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(map);
@@ -10,6 +9,12 @@ $(->
   stop_markers = {}
 
   map.on 'moveend', (e)->
+    if e.target.getZoom() < 16
+      for code, marker of stop_markers
+        e.target.removeLayer(marker)
+      stop_markers = {}
+      return
+
     center = e.target.getCenter()
 
     $.ajax(
