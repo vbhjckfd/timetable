@@ -80,7 +80,7 @@ $(->
       timeout: 6000
       maximumAge: 10000
     navigator.geolocation.getCurrentPosition showClosestStops, ((error) ->
-      alert(String(error))
+      console.debug error
     ), options
     return false
 
