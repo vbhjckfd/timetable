@@ -4,7 +4,7 @@ $(->
   map = L.map('map', {
     center: [0, 0]
   })
-  L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(map);
+  L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(map);
 
   stop_markers = {}
 
