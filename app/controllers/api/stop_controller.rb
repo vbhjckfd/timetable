@@ -20,37 +20,37 @@ class Api::StopController < ApplicationController
 
   def timetable
     stop_id = params[:stop_id].rjust(4, '0')
+    stop = Stop.where(code: stop_id).first
+
+    return render(status: :bad_request, text: "No stop with code #{stop_id}") unless stop
 
     @response = []
 
-    data = []
-    ['LAD', 'LET'].each do |item|
-        url = TIMETABLE_API_CALL % {company_name: item, code: stop_id}
-        raw_data = %x(curl --silent "#{url}" -H "Accept: application/xml")
+    
+    url = TIMETABLE_API_CALL % {company_name: 'LAD', code: stop_id}
+    raw_data = %x(curl --max-time 3 --silent "#{url}" -H "Accept: application/xml")
 
-        n = Nokogiri::XML(raw_data)
-        begin
-          data.concat JSON.parse(n.remove_namespaces!.xpath('//string').text)
-        rescue JSON::ParserError => e
-          
-        end
+    n = Nokogiri::XML(raw_data)
+    begin
+      data = JSON.parse(n.remove_namespaces!.xpath('//string').text)
+    rescue JSON::ParserError => e
+      data = []
     end
-
-    return render(status: :bad_request, text: "No stop with code #{stop_id}") if data.empty?
 
     data.sort! { |a,b| a['TimeToPoint'] <=> b['TimeToPoint'] }
 
     data.slice(0, 10).each do |item|
       vehicle_type = case
-      when item['RouteName'].start_with?('Трамвай')
+      when item['RouteName'].start_with?('ЛАД Тр')
+        :trol        
+      when item['RouteName'].start_with?('ЛАД Т')
         :tram
-      when item['RouteName'].start_with?('Тролейбус')
-        :trol
       else
         :bus
       end
       @response << {
         route: strip_route(item["RouteName"]), 
+        full_route_name: item["RouteName"],
         vehicle_type: vehicle_type, 
         end_stop: item['IterationEnd'],
         seconds_left: item["TimeToPoint"], 
@@ -73,7 +73,7 @@ class Api::StopController < ApplicationController
   private
 
   def strip_route(title)
-    title.gsub(/\D/, '')
+    title.gsub(/^ЛАД\s/, '').gsub(/^(А|Тр|Т|Н)(\d{1,2})(.+)/, '\1\2')
   end
 
   def round_time(time)
