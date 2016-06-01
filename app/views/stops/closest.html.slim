@@ -1,24 +1,20 @@
 - content_for :title, 'Онлайн табло'
 == javascript_include_tag "closest"
 
-div#geo-available style="display: none"
+css:
+  body, html{
+      height: 100%;
+  }
+
+div style="height: 89%;"
   p
-    a#geo-lnk href=""
-      | Де я?
-    img#spinner style="margin: 6px 0 0 15px; display: none" width="15px" src="https://i1.wp.com/cdnjs.cloudflare.com/ajax/libs/galleriffic/2.0.1/css/loader.gif"
+    img#spinner width="15px" src="https://i1.wp.com/cdnjs.cloudflare.com/ajax/libs/galleriffic/2.0.1/css/loader.gif"
 
-  div#map style="height: 450px; width:100%; display: none;"
-
-  p
-    | ... або ...
-
-
+  div#map style="height: 100%; display: none;"
 
 div
-  form#stop-code-form
+  form#stop-code-form style="margin-top: 20px"
     label for="stop-code"
       | Код зупинки
-    br
-    input#stop-code style="width: 50px; margin: 15px 0 15px 0"
-    br
-    input type="submit" value=">" style="width: 50px"
+    input#stop-code type="input" style="width: 50px; margin: 0 15px 0 15px; border: 1px black dotted"
+    input type="submit" value="Показати"
