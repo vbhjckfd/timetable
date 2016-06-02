@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
   root 'stops#closest'
 
-  resources :stops do 
+  resources :stops do
 
   end
   namespace :api do
@@ -10,7 +10,8 @@ Rails.application.routes.draw do
     get 'closest' => 'stop#closest'
   end
 
-  
+  post 'sms/zadarma' => 'sms#zadarma'
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
