@@ -22,12 +22,12 @@ javascript:
             icon: L.divIcon({
               className: 'vehicle-icon',
               html: '<b style="color: #ff0000">' + item['route'] + '</b><br />' + item['time_left']
-            })            
+            })
           }))
         })
 
         tableContainer.html(html)
-      })  
+      })
     }
 
     $('a#show-map').click(function(){
@@ -68,12 +68,12 @@ css:
   div#map {height: 450px}
   .vehicle-icon {background: rgba(255,255,255,0.7); border: none; width: 45px !important; height: auto !important; font-size: 15px}
 
-h3 = @stop.name
+h3 = "#{@stop.name} (№#{@stop.code})"
 table#timetable style="margin: 0 auto"
   thead style="font-weight: bold;"
     td
       | Маршрут
-    td 
+    td
       | Через
   tbody
     tr.tr
@@ -83,6 +83,6 @@ a#show-map href="#"
   | на мапі
 
 div#map
-  
+
 a#show-timetable href="#" style="display: none"
   | табличка
