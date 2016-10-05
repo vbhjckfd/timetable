@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 
   end
   namespace :api do
+    get 'stops/:id' => 'stop#show'
     get 'timetable/:stop_id' => 'stop#timetable'
     get 'closest' => 'stop#closest'
   end

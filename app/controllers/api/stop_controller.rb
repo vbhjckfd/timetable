@@ -2,6 +2,13 @@ require 'json'
 
 class Api::StopController < ApplicationController
 
+  def show
+    stop_id = params[:id].rjust(4, '0')
+    stop = Stop.where(code: stop_id).first
+
+    render json: stop
+  end
+
   def closest
     coords = params.slice(:longitude, :latitude)
     accuracy = params[:accuracy] || 10
