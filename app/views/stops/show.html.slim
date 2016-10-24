@@ -68,21 +68,28 @@ css:
   div#map {height: 450px}
   .vehicle-icon {background: rgba(255,255,255,0.7); border: none; width: 45px !important; height: auto !important; font-size: 15px}
 
-h3 = "#{@stop.name} (№#{@stop.code})"
-table#timetable style="margin: 0 auto"
-  thead style="font-weight: bold;"
-    td
-      | Маршрут
-    td
-      | Через
-  tbody
-    tr.tr
-      td.td colspan="2"
-        img src="https://i1.wp.com/cdnjs.cloudflare.com/ajax/libs/galleriffic/2.0.1/css/loader.gif"
-a#show-map href="#"
-  | на мапі
+div.container-fluid.text-center
+  div.row
+    div.col-md-12
+      h3 = "#{@stop.name} (№#{@stop.code})"
+  div.row
+    div.col-md-12
+      table#timetable.table.table-condensed.table-striped
+        thead
+          td
+            | Маршрут
+          td
+            | Через
+        tbody
+          tr.tr
+            td.td colspan="2"
+              img src="https://i1.wp.com/cdnjs.cloudflare.com/ajax/libs/galleriffic/2.0.1/css/loader.gif"
+  div.row
+    div.col-md-12
+      a#show-map href="#"
+        | на мапі
 
-div#map
+      div#map
 
-a#show-timetable href="#" style="display: none"
-  | табличка
+      a#show-timetable href="#" style="display: none"
+        | табличка

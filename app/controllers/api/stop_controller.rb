@@ -21,8 +21,6 @@ class Api::StopController < ApplicationController
     point = Geokit::LatLng.new(params[:latitude], params[:longitude])
     stops = Stop.in_lviv.within(accuracy.to_f / 1000 * 2, origin: point).by_distance(origin: point).select{|stop| stop.code.length < 5 }.slice(0, 5).map{|stop| {code: stop.code, name: stop.name, longitude: stop.longitude, latitude: stop.latitude} }
 
-    return render(status: :not_found, text: "No stops around you: <a target='_blank' href='https://maps.google.com?q=#{coords[:latitude]},#{coords[:longitude]}'>#{coords[:latitude]}, #{coords[:longitude]}</a>") if stops.empty?
-
     render json: stops
   end
 

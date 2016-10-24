@@ -12,6 +12,7 @@ $(function() {
 
   map.on('moveend', function(e) {
     var center, code, marker;
+
     if (e.target.getZoom() < 16) {
       for (code in stop_markers) {
         marker = stop_markers[code];
@@ -20,6 +21,7 @@ $(function() {
       stop_markers = {};
       return;
     }
+
     center = e.target.getCenter();
     return $.ajax({
       url: 'api/closest',
@@ -29,16 +31,13 @@ $(function() {
         accuracy: 200
       }
     }).done(function(data) {
-      return showMap(null, data);
+      return showMap(center, data);
     });
   });
 
-  var showLvivCenter = function() {
+  var showCityCenter = function() {
     showClosestStops({
-      coords: {
-        latitude: 49.840733,
-        longitude: 24.028164
-      }
+      coords: {latitude: 49.840733, longitude: 24.028164}
     });
   }
 
@@ -49,10 +48,12 @@ $(function() {
 
   var showMap = function(me, stops) {
     $('div#map').show();
+
     if (me) {
       map.setZoom(17).panTo(me);
       L.marker(me).addTo(map);
     }
+
     if (stops) {
       return $.each(stops, function(index, value) {
         if (value.code in stop_markers) {
@@ -72,6 +73,7 @@ $(function() {
       });
     }
   };
+
   if (navigator.geolocation) {
     var options = {
       enableHighAccuracy: true,
@@ -79,10 +81,10 @@ $(function() {
       maximumAge: 10000
     };
     navigator.geolocation.getCurrentPosition(showClosestStops, function(error) {
-      showLvivCenter();
+      showCityCenter();
     }, options);
   } else {
-    showLvivCenter();
+    showCityCenter();
   }
 
   return $('form#stop-code-form').submit(function() {
