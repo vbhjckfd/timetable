@@ -6,12 +6,12 @@ javascript:
 
     function refreshTimetable(tableContainer, transportLayer) {
       $.ajax({
-        url: '/api/timetable/#{@stop.code}'
+        url: '/api/stops/#{@stop.code}'
       }).done(function(data){
         html = ''
         transportLayer.clearLayers()
 
-        jQuery.each(data, function(index, item){
+        jQuery.each(data.timetable, function(index, item){
           html += '<tr>'
             html += '<td class="'+ item.vehicle_type +'">'
               html += item['route'] + ' ' + item['end_stop'] + '</td>'
