@@ -18,7 +18,7 @@ class Stop < ActiveRecord::Base
   def get_timetable
     timetable = []
 
-    url = TIMETABLE_API_CALL % {code: self.code}
+    url = TIMETABLE_API_CALL % {code: self.code.rjust(4, '0')}
     raw_data = %x(curl --max-time 3 --silent "#{url}" -H "Accept: application/xml")
 
     n = Nokogiri::XML(raw_data)

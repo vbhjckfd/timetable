@@ -13,12 +13,12 @@ class StopsController < ApplicationController
   end
 
   def closest
-    
+
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_stop
-      @stop = Stop.find_by(code: params[:id].rjust(4, '0'))
+      @stop = Stop.find_by(code: params[:id])
     end
 end

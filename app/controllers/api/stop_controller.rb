@@ -3,7 +3,7 @@ require 'json'
 class Api::StopController < ApplicationController
 
   def show
-    stop_id = params[:id].rjust(4, '0')
+    stop_id = params[:id]
     stop = Stop.where(code: stop_id).first
 
     return render(status: :bad_request, text: "No stop with code #{stop_id}") unless stop

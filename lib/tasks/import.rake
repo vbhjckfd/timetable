@@ -18,6 +18,7 @@ namespace :import do
     stops.values.each do |item|
       stop = Stop.find_or_create_by(external_id: item[:Id])
       stop.update Hash[mapping.map{|model_key, json_key| [model_key, item[json_key]] }]
+      stop.code.sub!(/^[0:]*/,"")
       p stop
 
       stop.save

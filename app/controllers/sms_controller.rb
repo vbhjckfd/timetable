@@ -7,7 +7,7 @@ class SmsController < ApplicationController
     return render(status: :not_acceptable, text: 'Bad parameters') unless (params['subject'] && params['stripped-text'])
 
     sender_number = params['subject'].rpartition('Вхідна СМС від: ').last
-    stop_number = params['stripped-text'].rpartition('Повідомлення: ').last.rjust(4, '0')
+    stop_number = params['stripped-text'].rpartition('Повідомлення: ').last
     stop = Stop.find_by(code: stop_number)
 
     # fail if any bad stop number
