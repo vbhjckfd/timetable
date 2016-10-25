@@ -9,7 +9,7 @@ class StopsController < ApplicationController
   # GET /stops/1
   # GET /stops/1.json
   def show
-    redirect_to action: "show", id: params[:id].sub(/^[0:]*/,""), status: :moved_permanently if params[:id].start_with?('0')
+    params[:id].sub!(/^[0:]*/,"") if params[:id].start_with?('0')
 
     @stop = Stop.find_by(code: params[:id])
   end
