@@ -1,5 +1,4 @@
 class StopsController < ApplicationController
-  before_action :set_stop, only: [:show]
 
   # GET /stops
   # GET /stops.json
@@ -10,15 +9,13 @@ class StopsController < ApplicationController
   # GET /stops/1
   # GET /stops/1.json
   def show
+    redirect_to action: "show", id: params[:id].sub(/^[0:]*/,""), status: :moved_permanently if params[:id].start_with?('0')
+
+    @stop = Stop.find_by(code: params[:id])
   end
 
   def closest
 
   end
 
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_stop
-      @stop = Stop.find_by(code: params[:id])
-    end
 end
