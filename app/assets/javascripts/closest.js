@@ -31,7 +31,7 @@ $(function() {
         accuracy: 200
       }
     }).done(function(data) {
-      return showMap(center, data);
+      return showMap(null, data);
     });
   });
 
