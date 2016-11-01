@@ -40,8 +40,9 @@ class Stop < ActiveRecord::Base
         :bus
       end
 
-      # Ugly, but it looks like data from API is 15sec late from reality
-      item["TimeToPoint"] = item["TimeToPoint"] - 15 > 0 ? item["TimeToPoint"] - 15 : 5
+      # Ugly, but it looks like data from API is 30sec late from reality
+      item["TimeToPoint"] = item["TimeToPoint"] - 30;
+      item["TimeToPoint"] = 0 if item["TimeToPoint"] < 0
 
       timetable << {
         route: strip_route(item["RouteName"]),
