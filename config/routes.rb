@@ -2,16 +2,12 @@ Rails.application.routes.draw do
 
   root 'stops#closest'
 
-  resources :stops do
+  resources :stops, only: [:index, :show]
 
-  end
   namespace :api do
     get 'stops/:id' => 'stop#show'
-    get 'timetable/:stop_id' => 'stop#timetable'
     get 'closest' => 'stop#closest'
   end
-
-  post 'sms/zadarma' => 'sms#zadarma'
 
 
   # The priority is based upon order of creation: first created -> highest priority.
