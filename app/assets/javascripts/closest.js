@@ -75,14 +75,19 @@ $(function() {
   };
 
   if (navigator.geolocation) {
-    var options = {
-      enableHighAccuracy: true,
-      timeout: 6000,
-      maximumAge: 10000
-    };
+    // Try to use GPS
     navigator.geolocation.getCurrentPosition(showClosestStops, function(error) {
-      showCityCenter();
-    }, options);
+      switch(error.code) {
+        case error.TIMEOUT:
+          // Use LBS or whatever google services have
+          navigator.geolocation.getCurrentPosition(showClosestStops, function(error) {
+            showCityCenter();
+          }, {timeout: 1000, maximumAge: Infinity});
+          break;
+        default:
+          showCityCenter();
+      }
+    }, {enableHighAccuracy: true, timeout: 3000, maximumAge: 10000});
   } else {
     showCityCenter();
   }
