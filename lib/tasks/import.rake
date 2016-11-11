@@ -30,6 +30,9 @@ namespace :import do
         next
       end
 
+      # Skip ugly stop on edge of the city
+      next if stop.external_id == 45592;
+
       # If this stop is not in Lviv - skip it
       if stop.code.to_i > 741
         next
