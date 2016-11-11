@@ -16,10 +16,24 @@ namespace :import do
     mapping = {code: :Code, name: :Name, longitude: :X, latitude: :Y}
 
     stops.values.each do |item|
-      stop = Stop.find_or_create_by(external_id: item[:Id])
-      stop.update Hash[mapping.map{|model_key, json_key| [model_key, item[json_key]] }]
-      stop.code.sub!(/^[0:]*/,"")
-      p stop
+      stop = Stop.find_or_initialize_by(external_id: item[:Id])
+
+      stop.code = item[:Code].sub(/^[0:]*/, "")
+      stop.name = item[:Name]
+      stop.longitude = item[:X]
+      stop.latitude = item[:Y]
+
+      begin
+        Integer(stop.code)
+      rescue
+        p "Code #{stop.code} for #{stop.name} is bad value"
+        next
+      end
+
+      # If this stop is not in Lviv - skip it
+      if stop.code.to_i > 741
+        next
+      end
 
       stop.save
     end
