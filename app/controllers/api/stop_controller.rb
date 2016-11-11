@@ -19,7 +19,7 @@ class Api::StopController < ApplicationController
     render(status: :bad_request, text: "No coordinates provided (longitude, latitude)") if coords.count != 2
 
     point = Geokit::LatLng.new(params[:latitude], params[:longitude])
-    stops = Stop.in_lviv.within(accuracy.to_f / 1000 * 2, origin: point).by_distance(origin: point).select{|stop| stop.code.length < 5 }.slice(0, 5).map{|stop| {code: stop.code, name: stop.name, longitude: stop.longitude, latitude: stop.latitude} }
+    stops = Stop.in_lviv.within(accuracy.to_f / 1000 * 2, origin: point).by_distance(origin: point).slice(0, 5).map{|stop| {code: stop.code, name: stop.name, longitude: stop.longitude, latitude: stop.latitude} }
 
     render json: stops
   end
