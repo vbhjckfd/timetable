@@ -34,7 +34,7 @@ namespace :import do
       next if stop.external_id == 45592;
 
       # If this stop is not in Lviv - skip it
-      if stop.code.to_i > 741
+      if stop.code.to_i > 803
         next
       end
 
