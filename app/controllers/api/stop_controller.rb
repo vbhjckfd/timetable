@@ -8,7 +8,10 @@ class Api::StopController < ApplicationController
 
     return render(status: :bad_request, text: "No stop with code #{stop_id}") unless stop
 
-    response = stop.as_json.merge timetable: stop.get_timetable
+    timetable = Rails.cache.fetch("stop_timetable/#{stop_id}", expires_in: 15.seconds) do
+      stop.get_timetable
+    end
+    response = stop.as_json.merge timetable: timetable || []
 
     render json: response
   end
