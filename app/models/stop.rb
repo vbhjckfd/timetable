@@ -5,7 +5,7 @@ class Stop < ActiveRecord::Base
   TIMETABLE_API_CALL = 'http://82.207.107.126:13541/SimpleRIDE/LAD/SM.WebApi/api/stops/?code=%{code}'
 
   acts_as_mappable :default_units => :kms,
-                   :default_formula => :sphere,
+                   :default_formula => :flat,
                    :lat_column_name => :latitude,
                    :lng_column_name => :longitude
 
