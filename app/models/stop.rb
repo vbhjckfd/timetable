@@ -32,9 +32,9 @@ class Stop < ActiveRecord::Base
 
     data.slice(0, 10).each do |item|
       vehicle_type = case
-      when item['RouteName'].start_with?('ЛАД Тр')
+      when item['RouteName'].start_with?('Трол.')
         :trol
-      when item['RouteName'].start_with?('ЛАД Т')
+      when item['RouteName'].start_with?('Трам.')
         :tram
       else
         :bus
