@@ -62,7 +62,7 @@ class Stop < ActiveRecord::Base
   private
 
   def strip_route(title)
-    title.gsub(/^ЛАД\s/, '').gsub(/^(А|Тр|Т|Н)(\d{1,2})(.+)/, '\1\2').gsub(/^(\D)0(\d{1,2})$/, '\1\2')
+    title.gsub(/^(\D+)0([1-9]{1,2})$/, '\1\2')
   end
 
   def round_time(time)
