@@ -1,13 +1,28 @@
-- content_for :title, @stop.name
-- stop_location = [@stop.latitude, @stop.longitude].to_s
-
 javascript:
   $(function() {
+    L.mapbox.accessToken = 'pk.eyJ1IjoidmJoamNrZmQiLCJhIjoiY2ltMjNidDRvMDBudnVvbTQ4aGQ2bTFzNiJ9.I5ym_chknrWXKf5hXD6anA';
+
+    var stop_code = document.location.pathname.split('/').pop();
+    var map = L.mapbox.map('map', 'mapbox.streets');
+    var transportLayer = L.layerGroup([]).addTo(map);
+
+    map.addOneTimeEventListener('load', function(e) {
+        $('div#map').hide();
+    });
 
     function refreshTimetable(tableContainer, transportLayer) {
       $.ajax({
-        url: '/api/stops/#{@stop.code}'
+        url: '/api/stops/' + stop_code
       }).done(function(data){
+        $('#title').html(data.name + '(№'+ data.code +')');
+        document.title = data.name;
+
+        var stop_location = [data.latitude, data.longitude];
+
+        map.setView(stop_location, 15);
+
+        L.marker(stop_location).addTo(map);
+
         html = ''
         transportLayer.clearLayers()
 
@@ -45,17 +60,6 @@ javascript:
       return false;
     })
 
-    L.mapbox.accessToken = 'pk.eyJ1IjoidmJoamNrZmQiLCJhIjoiY2ltMjNidDRvMDBudnVvbTQ4aGQ2bTFzNiJ9.I5ym_chknrWXKf5hXD6anA';
-    stop_location = #{stop_location}
-    map = L.mapbox.map('map', 'mapbox.streets')
-    map.addOneTimeEventListener('load', function(e) {
-        $('div#map').hide();
-    });
-    map.setView(stop_location, 15);
-
-    L.marker(stop_location).addTo(map);
-    transportLayer = L.layerGroup([]).addTo(map);
-
     refreshTimetable($('table tbody'), transportLayer)
     window.setInterval(refreshTimetable, 10000, $('table tbody'), transportLayer);
   });
@@ -71,7 +75,7 @@ css:
 div.container-fluid.text-center
   div.row
     div.col-md-12
-      h3 = "#{@stop.name} (№#{@stop.code})"
+      h3#title
   div.row
     div.col-md-12
       table#timetable.table.table-condensed.table-striped
