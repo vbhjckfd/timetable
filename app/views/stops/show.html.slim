@@ -3,25 +3,29 @@ javascript:
     L.mapbox.accessToken = 'pk.eyJ1IjoidmJoamNrZmQiLCJhIjoiY2ltMjNidDRvMDBudnVvbTQ4aGQ2bTFzNiJ9.I5ym_chknrWXKf5hXD6anA';
 
     var stop_code = document.location.pathname.split('/').pop();
-    var map = L.mapbox.map('map', 'mapbox.streets');
+    var map = L.map('map', {
+      center: [0, 0]
+    });
+    L.tileLayer('//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
     var transportLayer = L.layerGroup([]).addTo(map);
 
     map.addOneTimeEventListener('load', function(e) {
         $('div#map').hide();
     });
 
-    function refreshTimetable(tableContainer, transportLayer) {
+    function refreshTimetable(tableContainer, transportLayer, isFirstTime = false) {
       $.ajax({
         url: '/api/stops/' + stop_code
       }).done(function(data){
-        $('#title').html(data.name + '(№'+ data.code +')');
-        document.title = data.name;
 
-        var stop_location = [data.latitude, data.longitude];
+        if(isFirstTime) {
+          $('#title').html(data.name + '(№'+ data.code +')');
+          document.title = data.name;
 
-        map.setView(stop_location, 15);
-
-        L.marker(stop_location).addTo(map);
+          var stop_location = [data.latitude, data.longitude];
+          map.setView(stop_location, 15);
+          L.marker(stop_location).addTo(map);
+        }
 
         html = ''
         transportLayer.clearLayers()
@@ -60,7 +64,7 @@ javascript:
       return false;
     })
 
-    refreshTimetable($('table tbody'), transportLayer)
+    refreshTimetable($('table tbody'), transportLayer, true)
     window.setInterval(refreshTimetable, 10000, $('table tbody'), transportLayer);
   });
 
