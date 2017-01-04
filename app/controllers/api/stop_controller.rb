@@ -11,7 +11,7 @@ class Api::StopController < ApplicationController
     timetable = Rails.cache.fetch("stop_timetable/#{stop_id}", expires_in: 30.seconds) do
       stop.get_timetable
     end
-    response = stop.as_json.merge timetable: timetable || []
+    response = stop.as_json.symbolize_keys.slice(:name, :longitude, :latitude, :code).merge timetable: timetable || []
 
     render json: response
   end
