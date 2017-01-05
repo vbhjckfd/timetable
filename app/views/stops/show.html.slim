@@ -33,7 +33,7 @@ javascript:
         jQuery.each(data.timetable, function(index, item){
           html += '<tr>'
             html += '<td class="'+ item.vehicle_type +'">'
-              html += item['route'] + ' ' + item['end_stop'] + '</td>'
+              html += '<strong>' + item['route'] + '</strong> ' + item['end_stop'] + '</td>'
             html += '<td>'+ item['time_left'] +'</td>'
           html += '</tr>'
 
