@@ -63,13 +63,14 @@ class Stop < ActiveRecord::Base
 
   def strip_route(title)
     map = [
-      [/^(\D+)0([1-9]{1,2})$/, '\1\2'],
-      ['-рем', ''],
-      ['Трам.', 'Т'],
-      ['Трол.', 'Т'],
+      [/^(\D+)([0-9]{1,2})(\D+)$/, '\1\2'], # Remove all except type and route number
+      ['Трам.', 'T'],
+      ['Трол.', 'T'],
+      ['А', 'A'],
+      [/^([T|A]{1})([0-9]{2})$/, '\1 \2'], # Add space
     ];
 
-    map.map{|item| title.gsub!(item[0], item[1]) }
+    map.each{|item| title.gsub!(item[0], item[1]) }
     title
   end
 
