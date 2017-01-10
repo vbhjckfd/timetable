@@ -19,8 +19,9 @@ javascript:
       }).done(function(data){
 
         if(isFirstTime) {
-          $('#title').html(data.name + '(№'+ data.code +')');
-          document.title = data.name;
+          var title = data.name + ' (№'+ data.code +')';
+          $('#title').html(title);
+          document.title = title;
 
           var stop_location = [data.latitude, data.longitude];
           map.setView(stop_location, 15);
