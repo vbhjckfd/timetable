@@ -1,8 +1,6 @@
 "use strict"
 
 $(function() {
-  L.mapbox.accessToken = 'pk.eyJ1IjoidmJoamNrZmQiLCJhIjoiY2ltMjNidDRvMDBudnVvbTQ4aGQ2bTFzNiJ9.I5ym_chknrWXKf5hXD6anA';
-
   var stop_markers = {};
 
   var map = L.map('map', {
@@ -61,7 +59,7 @@ $(function() {
         }
         stop_markers[value.code] = L.marker([value.latitude, value.longitude], {
           icon: L.icon({
-            iconUrl: 'https://api.mapbox.com/v4/marker/pin-l-bus+fa0.png?access_token=' + L.mapbox.accessToken,
+            iconUrl: 'http://i.imgur.com/fyrG0CJ.png',
             iconAnchor: [20, 50]
           }),
           title: value.code,

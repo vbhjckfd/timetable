@@ -10,10 +10,10 @@ html lang="uk"
     title
       == yield(:title)
 
-    == javascript_include_tag "https://code.jquery.com/jquery-3.1.1.min.js"
-    == javascript_include_tag "https://api.mapbox.com/mapbox.js/v2.3.0/mapbox.js"
+    script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"
+    script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"
 
-    link href="https://api.mapbox.com/mapbox.js/v2.3.0/mapbox.css" rel='stylesheet'
+    link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css"
     link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"
 
 
