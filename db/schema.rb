@@ -11,7 +11,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161111155457) do
+ActiveRecord::Schema.define(version: 20170127141509) do
+
+  create_table "routes", force: :cascade do |t|
+    t.string   "name"
+    t.string   "code"
+    t.string   "external_id"
+    t.integer  "stops_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "routes", ["stops_id"], name: "index_routes_on_stops_id"
+
+  create_table "routes_stops", id: false, force: :cascade do |t|
+    t.integer "route_id", null: false
+    t.integer "stop_id",  null: false
+  end
+
+  add_index "routes_stops", ["route_id", "stop_id"], name: "index_routes_stops_on_route_id_and_stop_id"
+  add_index "routes_stops", ["stop_id", "route_id"], name: "index_routes_stops_on_stop_id_and_route_id"
 
   create_table "stops", force: :cascade do |t|
     t.string   "name"
