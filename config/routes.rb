@@ -6,6 +6,8 @@ Rails.application.routes.draw do
 
   namespace :api do
     get 'stops/:id' => 'stop#show'
+    get 'routes/:id' => 'route#show'
+    get 'routes' => 'route#list'
     get 'closest' => 'stop#closest'
   end
 
