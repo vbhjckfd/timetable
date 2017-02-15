@@ -34,15 +34,12 @@ javascript:
                   + '<td class="icon-type">'
                     + '<img src="https://dl.dropboxusercontent.com/u/585045/icons/'+ item.vehicle_type +'.png" width="32" height="32" />'
                   + '</td>'
+                  + '<td>'+ (item.lowfloor ? '<img src="https://dl.dropboxusercontent.com/u/585045/icons/lowfloor.png" />' : '')  +'</td>'
                   + '<td class="route"><strong>' + item['route'] + '</strong></td>'
                   + '<td class="direction">' + item['end_stop'] + '</td>'
                   + '<td>'+ item['time_left'] +'</td>'
                 + '</tr>'
           );
-
-          if(item.lowfloor) {
-            row.find('td:first').addClass('lowfloor');
-          }
 
           tableContainer.append(row);
 
@@ -77,7 +74,6 @@ javascript:
 
 css:
   table#timetable td {padding: 0 3px 0 3px; vertical-align: middle}
-  table#timetable td.lowfloor {background: url('https://dl.dropboxusercontent.com/u/585045/icons/lowfloor.png') 39px 10px no-repeat}
   div#map {height: 450px}
   .vehicle-icon {background: rgba(255,255,255,0.7); border: none; width: 45px !important; height: auto !important; font-size: 15px}
 
@@ -89,13 +85,13 @@ div.container-fluid.text-center
     div.col-md-12
       table#timetable.table.table-striped.text-left
         thead
-          td colspan="3"
+          td colspan="4"
             | Маршрут
           td
             | Через
         tbody
           tr.tr
-            td.td colspan="4"
+            td.td colspan="5"
               img src="https://i1.wp.com/cdnjs.cloudflare.com/ajax/libs/galleriffic/2.0.1/css/loader.gif"
   div.row
     div.col-md-12
