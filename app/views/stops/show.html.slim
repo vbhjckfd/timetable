@@ -11,12 +11,16 @@ javascript:
         $('div#map').hide();
     });
 
-    function refreshTimetable(tableContainer, transportLayer, isFirstTime = false) {
+    function defaultFor(arg, val) {
+      return typeof arg !== 'undefined' ? arg : val;
+    }
+
+    function refreshTimetable(tableContainer, transportLayer, isFirstTime) {
       $.ajax({
         url: '/api/stops/' + stop_code
       }).done(function(data){
 
-        if(isFirstTime) {
+        if(defaultFor(isFirstTime, false)) {
           var title = data.name + ' (№'+ data.code +')';
           $('#title').html(title);
           document.title = title;
