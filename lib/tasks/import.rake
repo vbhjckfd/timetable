@@ -6,35 +6,7 @@ namespace :import do
     end
   end
 
-  desc "Import routes from LAD"
-  task routes: :environment do
-    routes = []
-
-    iterate_over_url "http://82.207.107.126:13541/SimpleRide/LAD/SM.WebApi/api/CompositeRoute/" do |item|
-      route = Route.find_or_initialize_by(external_id: item[:Id])
-      route.code = item[:Code]
-      route.name = item[:Name]
-      route.save
-
-      routes << route
-    end
-
-    routes.each do |route|
-      route.stops = []
-      iterate_over_url "http://82.207.107.126:13541/SimpleRide/LAD/SM.WebApi/api/CompositeRoute/?code=#{route.code}" do |stop|
-        stop = Stop.where(code: stop[:Code].trimzero).first
-        route.stops << stop if stop
-      end
-
-      route.save
-
-      p "Imported #{route.name}"
-    end
-
-  end
-
-  desc "Import stops from LAD"
-  task stops: :environment do
+  def import_stops
     stops = []
 
     iterate_over_url "http://82.207.107.126:13541/SimpleRIDE/LAD/SM.WebApi/api/stops" do |item|
@@ -70,6 +42,31 @@ namespace :import do
     end
   end
 
+  def import_routes
+    routes = []
+
+    iterate_over_url "http://82.207.107.126:13541/SimpleRide/LAD/SM.WebApi/api/CompositeRoute/" do |item|
+      route = Route.find_or_initialize_by(external_id: item[:Id])
+      route.code = item[:Code]
+      route.name = item[:Name]
+      route.save
+
+      routes << route
+    end
+
+    routes.each do |route|
+      route.stops = []
+      iterate_over_url "http://82.207.107.126:13541/SimpleRide/LAD/SM.WebApi/api/CompositeRoute/?code=#{route.code}" do |stop|
+        stop = Stop.where(code: stop[:Code].trimzero).first
+        route.stops << stop if stop
+      end
+
+      route.save
+
+      p "Imported #{route.name}"
+    end
+  end
+
   def iterate_over_url(url)
     raw_data = %x(curl --silent "#{url}" -H "Accept: application/xml")
 
@@ -78,6 +75,12 @@ namespace :import do
       item = item.with_indifferent_access
       yield item
     end
+  end
+
+  desc "Import stops and routes from LAD"
+  task data: :environment do
+    import_stops
+    import_routes
   end
 
 end
