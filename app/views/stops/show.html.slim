@@ -31,14 +31,20 @@ javascript:
         }
 
         tableContainer.html('');
-        transportLayer.clearLayers()
+        transportLayer.clearLayers();
+
+        var imageMap = {
+          'bus': 'http://i.imgur.com/4EVZdKL.png',
+          'tram': 'http://i.imgur.com/dqcjtrl.png',
+          'trol': 'http://i.imgur.com/kadvwJg.png',
+        };
 
         jQuery.each(data.timetable, function(index, item){
           var row = $('<tr>'
                   + '<td class="icon-type">'
-                    + '<img src="https://dl.dropboxusercontent.com/u/585045/icons/'+ item.vehicle_type +'.png" width="32" height="32" />'
+                    + '<img src="' + imageMap[item.vehicle_type] + '" width="32" height="32" />'
                   + '</td>'
-                  + '<td>'+ (item.lowfloor ? '<img src="https://dl.dropboxusercontent.com/u/585045/icons/lowfloor.png" />' : '')  +'</td>'
+                  + '<td>'+ (item.lowfloor ? '<img src="http://i.imgur.com/nAvnARu.png" />' : '')  +'</td>'
                   + '<td class="route"><strong>' + item['route'] + '</strong></td>'
                   + '<td class="direction">' + item['end_stop'] + '</td>'
                   + '<td>'+ item['time_left'] +'</td>'
