@@ -1,0 +1,109 @@
+@charset "utf-8";
+/* (c) Yegor Kaliberda, 2017 - www.kaliberda.com */
+.lang {
+	margin: 10px 0 0px 15px;
+}
+.lang a,
+.lang span {
+	padding: 2px 5px;
+}
+.lang .act {
+	border-radius: 5px;
+	background-color: #ccc;
+}
+h1 {
+	font-size: 30px;
+	margin: 10px 0 15px 15px;
+	padding: 0;
+}
+.fixed-header {
+	background-color: #fff;
+	position: relative;
+	width: 100%;
+	z-index: 5;
+}
+.fixed-header.fixed {
+	top: 0;
+	position: fixed;
+}
+.header-clr {
+	height: 10px;
+}
+nav ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+nav ul li {
+	display: inline-block;
+	margin: 0 0 5px 0;
+	padding: 0;
+}
+.transport, .location {
+	margin: 10px 0 10px 10px;
+}
+.location {
+	display: none;
+}
+.strike {
+	color: #e00;
+}
+.strike i { text-decoration: line-through; font-style: normal; }
+.new {
+	background-color: rgba(0,204,0,0.5);
+}
+.tabs {
+	padding: 10px 15px 30px 10px !important;
+}
+.tabs .row { margin: 0 0 30px 0; }
+.full { display: none; }
+h3 {
+	font-size: 18px;
+	margin: 0 0 4px 0;
+	padding: 0;
+}
+.br-sm {
+	padding-top: 15px;
+}
+.t-icon {
+	background-image: url(num-icons.png);
+	background-repeat: no-repeat;
+	display: inline-block;
+	float: left;
+	margin: 0 20px 0 0;
+	height: 50px;
+	width: 50px;
+}
+.tram-ico { margin-right: 5px; }
+.tram-1 { background-position: 0 -100px; }
+.tram-2 { background-position: 0 -200px; }
+.tram-3 { background-position: 0 -300px; }
+.tram-4 { background-position: 0 -400px; }
+.tram-5 { background-position: 0 -500px; }
+.tram-6 { background-position: 0 -600px; }
+.tram-7 { background-position: 0 -700px; }
+.tram-8 { background-position: 0 -800px; }
+.tram-9 { background-position: 0 -900px; }
+.tram-10 { background-position: 0 -1000px; }
+.tram-11 { background-position: 0 -1100px; }
+
+.troll-ico { background-position: -100px 0; margin-right: 5px; }
+.troll-7 { background-position: -100px -700px; }
+
+.bus-ico { background-position: -200px 0; margin-right: 5px; }
+.bus-5a { background-position: -100px -100px; }
+.bus-15 { background-position: -100px -200px; }
+.bus-18 { background-position: -100px -300px; }
+.bus-19 { background-position: -100px -400px; }
+.bus-24 { background-position: -100px -500px; }
+.bus-29 { background-position: -100px -600px; }
+.bus-36 { background-position: -100px -800px; }
+.bus-39 { background-position: -100px -900px; }
+.bus-47a { background-position: -100px -1000px; }
+.bus-50 { background-position: -100px -1100px; }
+.bus-5n { background-position: -200px -100px; }
+
+.footer {
+	height: 100px;
+	padding: 0 15px;
+}

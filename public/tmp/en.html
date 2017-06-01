@@ -1,0 +1,248 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Тимчасові зміни маршрутів громадського транспорта Львова</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"> -->
+<link rel="stylesheet" href="styles.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="script.js"></script>
+</head>
+
+<body>
+<div class="lang"><a href="index.html">UK</a> <span class="act">EN</span></div>
+<h1>Temporary changes of city public transport</h1>
+<nav class="fixed-header">
+<ul class="nav nav-tabs">
+  <li role="presentation" class="active" id="transport"><a href="#">By means of transport</a></li>
+  <li role="presentation" id="location"><a href="#">By place of repair</a></li>
+</ul>
+<ul class="transport">
+	<li><button type="button" class="btn btn-info active" id="t-all">all</button></li>
+	<li><button type="button" class="btn btn-info" id="tram">tram</button></li>
+	<li><button type="button" class="btn btn-info" id="troll">trolleybus</button></li>
+	<li><button type="button" class="btn btn-info" id="bus">bus</button></li>
+</ul>
+<ul class="location">
+	<li><button type="button" class="btn btn-warning active" id="l-all">all</button></li>
+	<li><button type="button" class="btn btn-warning" id="loc-1">Main Railway station (Chernivetska str.)</button></li>
+	<li><button type="button" class="btn btn-warning" id="loc-2">Lychakivska str.</button></li>
+	<li><button type="button" class="btn btn-warning" id="loc-3">Bohdanivska str.</button></li>
+	<li><button type="button" class="btn btn-warning" id="loc-4">Sykhiv</button></li>
+	<li><button type="button" class="btn btn-warning" id="loc-5">Sknyliv railway st.</button></li>
+</ul>
+</nav>
+
+<div class="header-clr"></div>
+<div class="tabs container-fluid">
+
+	<div class="row tram loc-1">
+		<span class="tram-ico t-icon"></span><span class="tram-1 t-icon"></span><span class="changes">
+			<h3>Privokzalnyi market – Rynok square</h3>
+			<div class="short">
+				<span class="strike"><i>Main Railway station</i> – <i>Suburban railway station</i></span>
+				<span class="new">Skrynia – Privokzalnyi market</span> – Lviv Polytechnic – Rynok square – Franka square<br>
+				<button class="showfull btn btn-default btn-xs">Show full route</button>
+			</div>
+			<div class="full">
+			<span class="strike"><i>Main Railway station</i> – <i>Suburban railway station</i></span> 
+			<span class="new">Skrynia – Privokzalnyi market</span> – Kropyvnytskoho square – Rusovykh – Lviv Polytechnic – Main Post Office – Doroshenka – Rynok square – Ruska – Shukhevycha – Saksahanskoho – Franka square – Park of Culture – Sakharova – Kyivska – Rusovykh – Kropyvnytskoho square – <span class="new">Privokzalnyi market</span>
+			<span class="strike"><i>Suburban railway station</i> – <i>Main Railway station</i></span><br>
+			<button class="showshort btn btn-default btn-xs">Hide full route</button>
+			</div>
+		</span>
+	</div>
+	
+	<div class="row tram loc-2 loc-4">
+		<span class="tram-ico t-icon"></span><span class="tram-2 t-icon"></span><span class="changes">
+			<h3>Konovaltsia – Sykhiv (Santa-Barbara)</h3>
+			<div class="short">
+				Konovaltsia – Lviv Polytechnic – Rynok square –
+				<span class="new">Franka square – Sykhiv</span>
+				<span class="strike"><i>Lychakivska</i> – <i>Pasichna</i></span><br>
+				<button class="showfull btn btn-default btn-xs">Show full route</button>
+			</div>
+			<div class="full">
+			Konovaltsia – Hordynskykh – Zalizniaka – Melnyka – Horbachevskoho – Kyivska – Lviv Polytechnic – Main Post Office – Doroshenka – Rynok square – Ruska – <span class="new">Shukhevycha – Saksahanskoho – Franka square – Stryiskyi park – Academy of Arts – Ukraina Stadium – Uhorska – Shuvar – Children's polyclinic – Dovzhenko cinema – Polyclinic #4 – Kolomyiska – Santa-Barbara</span>
+			<span class="strike"><i>Mytna square</i> – <i>Military hospital</i> – <i>Medical University</i> – <i>Mechnykova</i> – <i>B.Kotyka</i> – <i>Pasichna</i></span><br>
+			<button class="showshort btn btn-default btn-xs">Hide full route</button>
+			</div>
+		</span>
+	</div>
+	
+	<div class="row tram loc-1">
+		<span class="tram-ico t-icon"></span><span class="tram-6 t-icon"></span><span class="changes">
+			<h3>Privokzalnyi market – Mykolaichuka</h3>
+			<div class="short">
+				<span class="strike"><i>Main Railway station</i> – <i>Suburban railway station</i></span>
+				<span class="new">Skrynia – Privokzalnyi market</span> – St. Anna church – Pidzamche – Mykolaichuka<br>
+				<button class="showfull btn btn-default btn-xs">Show full route</button>
+			</div>
+			<div class="full">
+			<span class="strike"><i>Main Railway station</i> – <i>Suburban railway station</i></span> 
+			<span class="new">Skrynia – Privokzalnyi market</span> – Kropyvnytskoho square – St. Anna church – Nalyvaika (Mahnus) – Staryi Rynok – Pid Dubom – H.Khotkevych Palace of Culture – Haidamatska – Pidzamche railway st. – Ostrianytsi – Promyslova – Tram depot – Svitanok factory – Lypynskoho – Mykolaichuka<br>
+			<button class="showshort btn btn-default btn-xs">Hide full route</button>
+			</div>
+		</span>
+	</div>
+	
+	<div class="row tram loc-2">
+		<span class="tram-ico t-icon"></span><span class="tram-7 t-icon"></span><span class="changes">
+			<h3>Tatarbunarska – Aquapark</h3>
+			<div class="short">
+				Tatarbunarska – St. Anna church – Pidvalna – <span class="new">Franka square – Sakharova – Aquapark</span>
+				<span class="strike"><i>Lychakivska</i> – <i>Pohulianka</i></span><br>
+				<button class="showfull btn btn-default btn-xs">Show full route</button>
+			</div>
+			<div class="full">
+			Tatarbunarska – Yanivskyi cemetery – Yeroshenka – Turianskoho – St. Anna church – Nalyvaika (Mahnus) – Puppet Theatre – Pidvalna – <span class="new">Shukhevycha – Saksahanskoho – Franka square – Park of Culture – Sakharova – Horbachevskoho – Shumskoho – Arkasa – Boichuka – Aquapark</span>
+			<span class="strike"><i>Mytna square</i> – <i>Military hospital</i> – <i>Medical University</i> – <i>Mechnykova</i> – <i>Lychakivskyi cemetery</i> – <i>K.Levytskoho</i> – <i>Pohulianka</i></span><br>
+			<button class="showshort btn btn-default btn-xs">Hide full route</button>
+			</div>
+		</span>
+	</div>
+	
+	<div class="row tram loc-4">
+		<span class="tram-ico t-icon"></span><span class="tram-8 t-icon"></span><span class="changes">
+			<h3>Soborna square – Sykhiv (Santa-Barbara)</h3>
+			<div class="short">
+				Soborna square – Franka square – Academy of Arts – Shuvar – Santa-Barbara
+				<span class="strike"> – <i>Vernadskoho</i></span><br>
+				<button class="showfull btn btn-default btn-xs">Show full route</button>
+			</div>
+			<div class="full">
+			Soborna square – Shukhevycha – Saksahanskoho – Franka square – Stryiskyi park – Academy of Arts – Ukraina Stadium – Uhorska – Shuvar – Children's polyclinic – Dovzhenko cinema – Polyclinic #4 – Kolomyiska – Santa-Barbara<span class="strike"> – <i>Vernadskoho</i></span><br>
+			<button class="showshort btn btn-default btn-xs">Hide full route</button>
+			</div>
+		</span>
+	</div>
+	
+	<div class="row tram loc-1">
+		<span class="tram-ico t-icon"></span><span class="tram-9 t-icon"></span><span class="changes">
+			<h3>Privokzalnyi market – Ruska</h3>
+			<div class="short">
+				<span class="strike"><i>Main Railway station</i> – <i>Suburban railway station</i></span>
+				<span class="new">Skrynia – Privokzalnyi market</span> – Kyivska – Franka square – Ruska<br>
+				<button class="showfull btn btn-default btn-xs">Show full route</button>
+			</div>
+			<div class="full">
+			<span class="strike"><i>Main Railway station</i> – <i>Suburban railway station</i></span> 
+			<span class="new">Skrynia – Privokzalnyi market</span> – Kropyvnytskoho square – Rusovykh – Kyivska – Sakharova – Park of Culture – Franka square – Saksahanskoho – Shukhevycha – Ruska – Doroshenka – Main Post Office – Lviv Polytechnic – Karpinskoho – Rusovykh – Kropyvnytskoho square – <span class="new">Privokzalnyi market</span>
+			<span class="strike"><i>Suburban railway station</i> – <i>Main Railway station</i></span><br>
+			<button class="showshort btn btn-default btn-xs">Hide full route</button>
+			</div>
+		</span>
+	</div>
+	
+	<div class="row tram loc-1 loc-2">
+		<span class="tram-ico t-icon"></span><span class="tram-10 t-icon"></span><span class="changes">
+			<h3 class="br-sm"><span class="strike">Canceled</span></h3>
+			<!-- <span class="strike"><i>Main Railway station</i> – <i>Suburban railway station</i> – <i>Kropyvnytskoho square</i> – <i>Rusovykh</i> – <i>Lviv Polytechnic</i> – <i>Main Post Office</i> – <i>Doroshenka</i> – <i>Rynok square</i> – <i>Ruska</i> – <i>Mytna square</i> – <i>Military hospital</i> – <i>Medical University</i> – <i>Mechnykova</i> – <i>B.Kotyka</i> – <i>Pasichna</i></span> -->
+		</span>
+	</div>
+	
+	<div class="row tram loc-1">
+		<span class="tram-ico t-icon"></span><span class="tram-11 t-icon"></span><span class="changes">
+			<h3 class="br-sm"><span class="strike">Canceled</span></h3>
+		</span>
+	</div>
+	
+	<div class="row troll loc-5">
+		<span class="troll-ico t-icon"></span><span class="troll-7 t-icon"></span><span class="changes">
+			<h3>University – Aviatsiina</h3>
+			University – St. George's Cathedral – Kropyvnytskoho square – Privokzalnyi market – Skrynia – Kulparkivska – Narodna – Bohdanivka – Motozavod – Vivsiana – Vilkhova – Kakhovska<span class="strike"> – <i>Kurmanovycha (Aviatsiina)</i> – <i>Sknyliv railway st.</i></span> 
+		</span>
+	</div>
+	
+	<div class="row bus loc-2">
+		<span class="bus-ico t-icon"></span><span class="bus-5a t-icon"></span><span class="changes">
+			<h3>Rizni square – Vynnyky</h3>
+			Rizni square – Mytna square – Military hospital – <span class="strike"><i>by Lychakivska str.</i></span> – <span class="new">by Nekrasova str.</span> – Pasichna – Hlynianskyi Trakt – Vynnyky
+		</span>
+	</div>
+	
+	<div class="row bus loc-2">
+		<span class="bus-ico t-icon"></span><span class="bus-15 t-icon"></span><span class="changes">
+			<h3>Medovoi Pechery – Suburban railway station</h3>
+			Medovoi Pechery – Maiorivka – Pasichna – Lychakivska – <span class="strike"><i>by Lychakivska str.</i></span> – <span class="new">by Nekrasova str.</span> – Mytna square – Pidvalna – St. Anna church – Kropyvnytskoho square – Suburban railway station
+		</span>
+	</div>
+	
+	<div class="row bus loc-2">
+		<span class="bus-ico t-icon"></span><span class="bus-18 t-icon"></span><span class="changes">
+			<h3>Drizhdzhova – Zaliznychnyi district Polyclinic</h3>
+			Drizhdzhova – Bus station #6 – <span class="strike"><i>by Lychakivska str.</i></span> – <span class="new">by Nekrasova str.</span> – Mytna square – Shota Rustaveli – Stryiska – Volodymyra Velykoho – Pivdennyi – Motozavod – Siaivo – Shyroka – Zaliznychnyi district Polyclinic
+		</span>
+	</div>
+	
+	<div class="row bus loc-3">
+		<span class="bus-ico t-icon"></span><span class="bus-19 t-icon"></span><span class="changes">
+			<h3>Sykhiv – Shchurata</h3>
+			Sykhiv – Zelena – Vashinhtona – Pasichna – Hlynianskyi Trakt – <span class="strike"><i>by Bohdanivska str.</i></span> – <span class="new">Doroha Kryvchytska</span> –  Plastova – Kovelska – Bus station #2 – Hrinchenka – Shchurata
+		</span>
+	</div>
+	
+	<div class="row bus loc-2">
+		<span class="bus-ico t-icon"></span><span class="bus-24 t-icon"></span><span class="changes">
+			<h3>Suburban railway station – Medovoi Pechery</h3>
+			Suburban railway station – Kropyvnytskoho square – Bandery – Doroshenka – Halytska square – Mytna square – <span class="strike"><i>by Lychakivska str.</i></span> – <span class="new">by Nekrasova str.</span> – Pasichna – Maiorivka – Medovoi Pechery
+		</span>
+	</div>
+	
+	<div class="row bus loc-2">
+		<span class="bus-ico t-icon"></span><span class="bus-29 t-icon"></span><span class="changes">
+			<h3>Vynnyky – Main Railway station</h3>
+			Vynnyky – Lysynychi – Hlynianskyi Trakt – <span class="strike"><i>by Lychakivska str.</i></span> – <span class="new">by Nekrasova str.</span> – Mytna square – Pidvalna – Horodotska – St. Anna church – Kropyvnytskoho square – Main Railway station
+		</span>
+	</div>
+	
+	<div class="row bus loc-2">
+		<span class="bus-ico t-icon"></span><span class="bus-36 t-icon"></span><span class="changes">
+			<h3>Vynnyky, Zabava – Kropyvnytskoho square</h3>
+			Vynnyky, Zabava – <span class="strike"><i>by Lychakivska str.</i></span> – <span class="new">by Nekrasova str.</span> – Mytna square – Pidvalna – Horodotska – St. Anna church – Kropyvnytskoho square
+		</span>
+	</div>
+	
+	<div class="row bus loc-2">
+		<span class="bus-ico t-icon"></span><span class="bus-39 t-icon"></span><span class="changes">
+			<h3>Car market – Hrinchenka</h3>
+			Car market – Doroha Kryvchytska – <span class="strike"><i>by Lychakivska str.</i></span> – <span class="new">by Nekrasova str.</span> – Mytna square – Pidvalna – Chornovola av. – Linkolna – Bus station #2 – Hrinchenka
+		</span>
+	</div>
+	
+	<div class="row bus loc-2">
+		<span class="bus-ico t-icon"></span><span class="bus-47a t-icon"></span><span class="changes">
+			<h3>Sykhiv – пл.Rizni square</h3>
+			Sykhiv – Zelena – Vashinhtona – Pasichna – <span class="strike"><i>by Lychakivska str.</i></span> – <span class="new">by Nekrasova str.</span> – Mytna square – Rizni square
+		</span>
+	</div>
+	
+	<div class="row bus loc-2">
+		<span class="bus-ico t-icon"></span><span class="bus-50 t-icon"></span><span class="changes">
+			<h3>Vashinhtona – Riasne-2</h3>
+			Vashinhtona – Pasichna – <span class="strike"><i>by Lychakivska str.</i></span> – <span class="new">by Nekrasova str.</span> – Mytna square – Chornovola av. – Tunelna – Shevchenka – Riasne – Riasne-2
+		</span>
+	</div>
+	
+	<div class="row bus loc-2">
+		<span class="bus-ico t-icon"></span><span class="bus-5n t-icon"></span><span class="changes">
+			<h3>Main Railway station – Hospital #8</h3>
+			Main Railway station – St. Anna church – Opera theatre – Svobody av. – Mytna square – <span class="strike"><i>by Lychakivska str.</i></span> – <span class="new">by Nekrasova str.</span> – Pasichna – Vashinhtona – Dnisterska – Hospital #8
+		</span>
+	</div>
+	
+	
+</div><!-- tabs -->
+
+<div class="footer">
+The contents: <a href="https://www.facebook.com/pavloSPB" target="_blank">Pavlo Syrvatka</a>, <a href="https://www.facebook.com/alexandra.sladkova.31" target="_blank">Alexandra Sladkova</a><br>
+Consultations: <a href="https://www.facebook.com/alexander.shutyuck" target="_blank">Alexander Shutyuck</a><br>
+Hosting: <a href="https://www.facebook.com/vbhjckfd" target="_blank">Myroslav Holyak</a><br>
+&copy Design and programming: <a href="https://www.facebook.com/yegor.kaliberda" target="_blank">Yegor Kaliberda</a> (<a href="http://kaliberda.com" target="_blank">www.kaliberda.com</a>), 2017
+</div>
+
+</body>
+</html>
