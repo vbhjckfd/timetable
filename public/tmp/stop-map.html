@@ -35,7 +35,7 @@
       let center = map.getCenter();
       let bounds = map.getBounds();
 
-      let ladParam = jQuery.param({longitude: center.lng, latitude: center.lat, accuracy: map.distance(bounds.getNorthEast(), bounds.getSouthWest())});
+      let ladParam = jQuery.param({longitude: center.lng, latitude: center.lat, accuracy: 2 * map.distance(bounds.getNorthEast(), bounds.getSouthWest())});
       allStops.clearLayers();
       $.get('https://lad.lviv.ua/api/closest?' + ladParam, function(data) {
         data.forEach(function(item) {
