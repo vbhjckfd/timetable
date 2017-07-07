@@ -26,6 +26,21 @@
   body {                  background-color:       orange; calc(100vh); width: 100%  }
 
   #map { height: 100%; width: 100% }
+
+  .stop-marker-icon {
+    border: none;
+    width: 50px !important;
+    height: 50px !important;
+    font-size: 15px;
+    color: #fff;
+    margin: -50px 0 0 -10px !important;
+    background-image: url('http://i.imgur.com/EpNWJyI.png')
+  }
+
+  .stop-marker-icon .label {
+    top: 5px;
+    position: relative;
+  }
 </style>
 
 <script type="text/javascript">
@@ -39,7 +54,12 @@
       allStops.clearLayers();
       $.get('https://lad.lviv.ua/api/closest?' + ladParam, function(data) {
         data.forEach(function(item) {
-          allStops.addLayer(L.marker([item.latitude, item.longitude]));
+          let markerIcon = L.divIcon({
+            className: 'stop-marker-icon',
+            html: '<span class="label">'+ item.code +'</span>'
+          });
+
+          allStops.addLayer(L.marker([item.latitude, item.longitude], {icon: markerIcon}));
         });
       });
     }
