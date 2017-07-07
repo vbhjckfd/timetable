@@ -59,7 +59,7 @@
             html: '<span class="label">'+ item.code +'</span>'
           });
 
-          allStops.addLayer(L.marker([item.latitude, item.longitude], {icon: markerIcon}));
+          allStops.addLayer(L.marker([item.latitude, item.longitude], {icon: markerIcon, draggable: true}));
         });
       });
     }
