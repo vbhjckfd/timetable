@@ -29,17 +29,32 @@
 
   .stop-marker-icon {
     border: none;
-    width: 50px !important;
-    height: 50px !important;
-    font-size: 15px;
+    width: 150px !important;
+    height: 150px !important;
     color: #fff;
-    margin: -50px 0 0 -10px !important;
-    background-image: url('http://i.imgur.com/EpNWJyI.png')
+    margin: 0 !important;
+    top: -100px;
+    left: -75px;
+  }
+
+  .stop-marker-icon .stop-name {
+    background-color: white;
+    color: black;
+    font-weight: bold;
+    margin-bottom: 10px;
+    padding: 2px;
+    border-radius: 25px;
+    font-size: 13px;
   }
 
   .stop-marker-icon .label {
-    top: 5px;
-    position: relative;
+    padding-top: 5px;
+    background-image: url('http://i.imgur.com/EpNWJyI.png');
+    background-repeat: no-repeat;
+    width: 50px !important;
+    height: 50px !important;
+    margin: auto;
+    font-size: 15px;
   }
 </style>
 
@@ -56,7 +71,7 @@
         data.forEach(function(item) {
           let markerIcon = L.divIcon({
             className: 'stop-marker-icon',
-            html: '<span class="label">'+ item.code +'</span>'
+            html: '<div class="stop-name">'+ item.name +'</div><div class="label">'+ item.code +'</div>'
           });
 
           allStops.addLayer(L.marker([item.latitude, item.longitude], {icon: markerIcon, draggable: true}));
