@@ -65,7 +65,7 @@ namespace :import do
           next
         end
 
-        stop = Stop.where(code: stop[:Code].trimzero).first
+        stop = Stop.where(external_id: stop[:Id]).first
         route.stops << stop if stop
       end
 
