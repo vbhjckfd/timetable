@@ -55,8 +55,16 @@ namespace :import do
     end
 
     routes.each do |route|
+      route.stops.clear
       route.stops = []
       iterate_over_url "http://82.207.107.126:13541/SimpleRide/LAD/SM.WebApi/api/CompositeRoute/?code=#{route.code}" do |stop|
+        begin
+          Integer(stop[:Code].trimzero)
+        rescue
+          p "Code #{stop[:Code]} for #{stop[:Code]} is bad value"
+          next
+        end
+
         stop = Stop.where(code: stop[:Code].trimzero).first
         route.stops << stop if stop
       end
