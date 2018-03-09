@@ -11,6 +11,7 @@ Rails.application.routes.draw do
     get 'closest' => 'stop#closest'
   end
 
+  post '/partners/startmobile' => 'sms#get'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
