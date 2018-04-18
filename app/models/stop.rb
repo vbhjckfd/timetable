@@ -60,6 +60,15 @@ class Stop < ActiveRecord::Base
     timetable
   end
 
+  def get_all_info
+    timetable = self.get_timetable
+    response = self.as_json.symbolize_keys.slice(:name, :longitude, :latitude, :code).merge timetable: timetable || []
+
+    response[:routes] = Route.through(self).map{|r| r.name }
+
+    response
+  end
+
   private
 
   def strip_route(title)

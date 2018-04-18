@@ -8,14 +8,10 @@ class SmsController < ApplicationController
     xml_doc  = Nokogiri::XML(request.raw_post).remove_namespaces!
     stop_code = xml_doc.xpath('//body').text
 
-    url = "https://lad.lviv.ua/api/stops/%{code}" % {code: stop_code}
+    stop = Stop.where(code: stop_code).first
+    return render :nothing => true, :status => :service_unavailable unless stop
 
-    raw_data = %x(curl --max-time 30 --silent "#{url}")
-    begin
-      stop_data = JSON.parse raw_data, symbolize_names: true
-    rescue => ex
-      return render :nothing => true, :status => :service_unavailable
-    end
+    stop_data = stop.get_all_info
 
     timetable = {};
     stop_data[:timetable].each do |item|
