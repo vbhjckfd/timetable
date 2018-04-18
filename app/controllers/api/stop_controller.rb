@@ -8,9 +8,10 @@ class Api::StopController < ApplicationController
 
     return render(status: :bad_request, text: "No stop with code #{stop_id}") unless stop
 
-    timetable = Rails.cache.fetch("stop_timetable/#{stop_id}", expires_in: 15.seconds) do
-      stop.get_timetable
-    end
+    # timetable = Rails.cache.fetch("stop_timetable/#{stop_id}", expires_in: 15.seconds) do
+    #   stop.get_timetable
+    # end
+    timetable = stop.get_timetable
     response = stop.as_json.symbolize_keys.slice(:name, :longitude, :latitude, :code).merge timetable: timetable || []
 
     response[:routes] = Route.through(stop).map{|r| r.name }
