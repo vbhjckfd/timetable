@@ -16,6 +16,12 @@ class Stop < ActiveRecord::Base
   }
 
   def get_timetable
+    all_info = Rails.cache.fetch("stop_timetable/#{self.id}", expires_in: 15.seconds) do
+      self.get_timetable_from_api
+    end
+  end
+
+  def get_timetable_from_api
     timetable = []
 
     url = TIMETABLE_API_CALL % {code: self.code.to_s.rjust(4, '0')}
@@ -58,15 +64,6 @@ class Stop < ActiveRecord::Base
     end
 
     timetable
-  end
-
-  def get_all_info
-    timetable = self.get_timetable
-    response = self.as_json.symbolize_keys.slice(:name, :longitude, :latitude, :code).merge timetable: timetable || []
-
-    response[:routes] = Route.through(self).map{|r| r.name }
-
-    response
   end
 
   private

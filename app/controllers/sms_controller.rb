@@ -11,10 +11,8 @@ class SmsController < ApplicationController
     stop = Stop.where(code: stop_code).first
     return render :nothing => true, :status => :service_unavailable unless stop
 
-    stop_data = stop.get_all_info
-
     timetable = {};
-    stop_data[:timetable].each do |item|
+    stop.get_timetable.each do |item|
       timetable[item[:route]] = [] unless timetable.key? item[:route]
 
       timetable[item[:route]] << item[:time_left] if timetable[item[:route]].length < 2
