@@ -25,8 +25,7 @@ $(function() {
       url: 'api/closest',
       data: {
         longitude: center.lng,
-        latitude: center.lat,
-        accuracy: 200
+        latitude: center.lat
       }
     }).done(function(data) {
       return showMap(null, data);

@@ -22,11 +22,13 @@ class Api::StopController < ApplicationController
 
   def closest
     coords = params.slice(:longitude, :latitude)
-    accuracy = params[:accuracy] || 10
+    accuracy = 300
     render(status: :bad_request, text: "No coordinates provided (longitude, latitude)") if coords.count != 2
 
-    point = Geokit::LatLng.new(params[:latitude], params[:longitude])
-    stops = Stop.in_lviv.within(accuracy.to_f / 1000 * 2, origin: point).by_distance(origin: point).slice(0, 10).map{|stop| {code: stop.code, name: stop.name, longitude: stop.longitude, latitude: stop.latitude} }
+    point = Geokit::LatLng.new(params[:latitude].to_f.round(3), params[:longitude].to_f.round(3));
+    stops = Rails.cache.fetch("#{point.to_s}/closest_stops", expires_in: 24.hours) do
+      Stop.in_lviv.within(accuracy.to_f / 1000 * 2, origin: point).by_distance(origin: point).map{|stop| {code: stop.code, name: stop.name, longitude: stop.longitude, latitude: stop.latitude} }
+    end
 
     render json: stops
   end
