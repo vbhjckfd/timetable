@@ -38,13 +38,18 @@ javascript:
           'tram': 'http://i.imgur.com/dqcjtrl.png',
           'trol': 'http://i.imgur.com/kadvwJg.png',
         };
+        var altMap = {
+          'bus': 'автобус',
+          'tram': 'трамвай',
+          'trol': 'тролейбус',
+        };
 
         jQuery.each(data.timetable, function(index, item){
           var row = $('<tr>'
                   + '<td class="icon-type">'
-                    + '<img src="' + imageMap[item.vehicle_type] + '" width="32" height="32" />'
+                    + '<img alt="' + altMap[item.vehicle_type] + '" src="' + imageMap[item.vehicle_type] + '" width="32" height="32" />'
                   + '</td>'
-                  + '<td>'+ (item.lowfloor ? '<img src="http://i.imgur.com/nAvnARu.png" />' : '')  +'</td>'
+                  + '<td>'+ (item.lowfloor ? '<img alt="доступний для людей на візку" src="http://i.imgur.com/nAvnARu.png" />' : '')  +'</td>'
                   + '<td class="route"><strong>' + item['route'] + '</strong></td>'
                   + '<td class="direction">' + item['end_stop'] + '</td>'
                   + '<td>'+ item['time_left'] +'</td>'
@@ -95,10 +100,11 @@ div.container-fluid.text-center
     div.col-md-12
       table#timetable.table.table-striped.text-left
         thead
-          td colspan="4"
-            | Маршрут
-          td
-            | Через
+          tr
+            th colspan="4"
+              | Маршрут
+            th
+              | Через
         tbody
           tr.tr
             td.td colspan="5"
