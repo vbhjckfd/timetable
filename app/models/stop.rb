@@ -34,6 +34,7 @@ class Stop < ActiveRecord::Base
       data = []
     end
 
+    data.delete_if { |item| [0, 2].include? item['State'] }
     data.sort! { |a,b| a['TimeToPoint'] <=> b['TimeToPoint'] }
 
     data.slice(0, 10).each do |item|
@@ -55,7 +56,7 @@ class Stop < ActiveRecord::Base
         full_route_name: item["RouteName"],
         vehicle_type: vehicle_type,
         lowfloor: !!item["LowFloor"],
-        end_stop: item['EndPoint'],
+        end_stop: item['IterationEnd'],
         seconds_left: item["TimeToPoint"],
         time_left: round_time(item["TimeToPoint"]),
         longitude: item['X'],
