@@ -37,6 +37,8 @@ class Stop < ActiveRecord::Base
     data.delete_if { |item| [0, 2].include? item['State'] }
     data.sort! { |a,b| a['TimeToPoint'] <=> b['TimeToPoint'] }
 
+    directions = {};
+
     data.slice(0, 10).each do |item|
       vehicle_type = case
       when item['RouteName'].start_with?('Трол.')
@@ -51,12 +53,14 @@ class Stop < ActiveRecord::Base
       item["TimeToPoint"] = item["TimeToPoint"] - 30;
       item["TimeToPoint"] = 0 if item["TimeToPoint"] < 0
 
+      directions[item['RouteCode']] = item['IterationEnd'] unless directions.key? item['RouteCode']
+
       timetable << {
         route: strip_route(item["RouteName"]),
         full_route_name: item["RouteName"],
         vehicle_type: vehicle_type,
         lowfloor: !!item["LowFloor"],
-        end_stop: item['IterationEnd'],
+        end_stop: directions[item['RouteCode']],
         seconds_left: item["TimeToPoint"],
         time_left: round_time(item["TimeToPoint"]),
         longitude: item['X'],
