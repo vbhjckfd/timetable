@@ -53,14 +53,14 @@ class Stop < ActiveRecord::Base
       item["TimeToPoint"] = item["TimeToPoint"] - 30;
       item["TimeToPoint"] = 0 if item["TimeToPoint"] < 0
 
-      directions[item['RouteCode']] = item['IterationEnd'] unless directions.key? item['RouteCode']
+      directions[item['RouteId']] = item['IterationEnd'] unless directions.key? item['RouteId']
 
       timetable << {
         route: strip_route(item["RouteName"]),
         full_route_name: item["RouteName"],
         vehicle_type: vehicle_type,
         lowfloor: !!item["LowFloor"],
-        end_stop: directions[item['RouteCode']],
+        end_stop: directions[item['RouteId']],
         seconds_left: item["TimeToPoint"],
         time_left: round_time(item["TimeToPoint"]),
         longitude: item['X'],
