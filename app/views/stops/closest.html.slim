@@ -1,26 +1,9 @@
 - content_for :title, 'Онлайн-табло львівського транспорту'
 == javascript_include_tag "closest"
 
-css:
-  body, html, div.container-fluid, div.map-col, #map {
-      height: 100%;
-  }
-
-div class="container-fluid"
-  div.row style="height: 90%"
-    div.map-col.col-md-12
+div class="container-fluid d-flex h-100 p-0"
+    div class="row d-flex h-100 w-100 m-0"
       p
         img#spinner width="15px" src="https://i1.wp.com/cdnjs.cloudflare.com/ajax/libs/galleriffic/2.0.1/css/loader.gif"
 
-      div#map style="display: none;"
-
-  div.row.text-center
-    form#stop-code-form style="margin-top: 20px"
-      div.col-xs-4
-          label for="stop-code"
-            | Код зупинки
-      div.col-xs-4
-          input#stop-code.form-control type="text"
-      div.col-xs-2
-          button.btn.btn-default type="submit"
-            | Показати
+      div#map class="d-flex h-100 w-100 m-0 hidden"

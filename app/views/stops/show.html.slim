@@ -1,15 +1,24 @@
 javascript:
   $(function() {
     var stop_code = document.location.pathname.split('/').pop();
-    var map = L.map('map', {
-      center: [0, 0]
-    });
-    L.tileLayer('//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-    var transportLayer = L.layerGroup([]).addTo(map);
+    var map;
+    var transportLayer = L.layerGroup([]);
 
-    map.addOneTimeEventListener('load', function(e) {
-        $('div#map').hide();
-    });
+    var initMap = function() {
+      if ('undefined' !== typeof map) {
+        return;
+      }
+
+      map = L.map('map', {
+        center: [0, 0]
+      });
+      L.tileLayer('//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+      transportLayer.addTo(map);
+
+      map.addOneTimeEventListener('load', function(e) {
+          $('div#map').hide();
+      });
+    }
 
     function defaultFor(arg, val) {
       return typeof arg !== 'undefined' ? arg : val;
@@ -21,13 +30,15 @@ javascript:
       }).done(function(data){
 
         if(defaultFor(isFirstTime, false)) {
-          var title = data.name + ' (№'+ data.code +')';
+          var title = data.name + ' <small>(№'+ data.code +')</small>';
           $('#title').html(title);
           document.title = title;
 
-          var stop_location = [data.latitude, data.longitude];
-          map.setView(stop_location, 15);
-          L.marker(stop_location).addTo(map);
+          if ('undefined' !== typeof map) {
+            var stop_location = [data.latitude, data.longitude];
+            map.setView(stop_location, 16);
+            L.marker(stop_location).addTo(map);
+          }
         }
 
         tableContainer.html('');
@@ -88,37 +99,34 @@ javascript:
     })
 
     refreshTimetable($('table tbody'), transportLayer, true)
+    initMap();
     window.setInterval(refreshTimetable, 10000, $('table tbody'), transportLayer);
   });
 
 css:
-  table#timetable td {padding: 0 3px 0 3px; vertical-align: middle}
-  div#map {height: 450px}
   .vehicle-icon {background: rgba(255,255,255,0.8); border: none; width: 60px !important; height: auto !important; font-size: 14px}
+  div#map {height: 450px}
 
-div.container-fluid.text-center
-  div.row
-    div.col-md-12
-      h3#title
-  div.row
-    div.col-md-12
-      table#timetable.table.table-striped.text-left summary="Таблиця з розкладом транспорту Львова. У кожному рядку - вид транспорту, номер, кінцева зупинка по напрямку, через скільки хвилин приходить"
-        thead
-          tr
-            th colspan="4" scope="colgroup"
-              | Маршрут
-            th scope="col"
-              | Через
-        tbody
-          tr.tr
-            td.td colspan="5"
-              img src="https://i1.wp.com/cdnjs.cloudflare.com/ajax/libs/galleriffic/2.0.1/css/loader.gif"
-  div.row
-    div.col-md-12
-      a#show-map href="#"
-        | на мапі
+div class="container-fluid"
+  div class="row p-0 m-0 justify-content-around"
+    h1#title class="h4"
+  div class="row p-0 m-0"
+    table#timetable.table.table-striped.table-sm.text-left summary="Таблиця з розкладом транспорту Львова. У кожному рядку - вид транспорту, номер, кінцева зупинка по напрямку, через скільки хвилин приходить"
+      thead
+        tr
+          th colspan="4" scope="colgroup"
+            | Маршрут
+          th scope="col"
+            | Через
+      tbody
+        tr.tr
+          td class="td" colspan="5"
+            img src="https://i1.wp.com/cdnjs.cloudflare.com/ajax/libs/galleriffic/2.0.1/css/loader.gif"
+  div class="row w-100 justify-content-around p-0 m-0"
+    a#show-map href="#"
+      | на мапі
 
-      div#map
+    div#map class="w-100 hidden"
 
-      a#show-timetable href="#" style="display: none"
-        | табличка
+    a#show-timetable href="#" style="display: none"
+      | табличка
