@@ -61,7 +61,11 @@ javascript:
           transportLayer.addLayer(L.marker([item.latitude, item.longitude], {
             icon: L.divIcon({
               className: 'vehicle-icon',
-              html: '<b style="color: #ff0000">' + item['route'] + '</b><br />' + item['time_left']
+              html: [
+                  '<b style="color: #ff0000">' + item['route'] + '</b>',
+                  item['time_left'],
+                  '<small>' + item.number + '</small>',
+              ].join('<br />')
             })
           }))
         })
@@ -90,7 +94,7 @@ javascript:
 css:
   table#timetable td {padding: 0 3px 0 3px; vertical-align: middle}
   div#map {height: 450px}
-  .vehicle-icon {background: rgba(255,255,255,0.7); border: none; width: 45px !important; height: auto !important; font-size: 15px}
+  .vehicle-icon {background: rgba(255,255,255,0.8); border: none; width: 60px !important; height: auto !important; font-size: 14px}
 
 div.container-fluid.text-center
   div.row
