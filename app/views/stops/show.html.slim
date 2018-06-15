@@ -30,9 +30,8 @@ javascript:
       }).done(function(data){
 
         if(defaultFor(isFirstTime, false)) {
-          var title = data.name + ' <small>(№'+ data.code +')</small>';
-          $('#title').html(title);
-          document.title = title;
+          $('#title').html(data.name + ' <small>(№'+ data.code +')</small>');
+          document.title = data.name + ' (№'+ data.code +')';
 
           if ('undefined' !== typeof map) {
             var stop_location = [data.latitude, data.longitude];
