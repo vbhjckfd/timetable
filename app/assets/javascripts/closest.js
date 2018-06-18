@@ -85,7 +85,7 @@ $(function() {
     if (!stop_code) {
       return false;
     }
-    window.location = '/stops/' + stop_code;
+    window.location.assign('/stops/' + stop_code);
     return false;
   });
 
