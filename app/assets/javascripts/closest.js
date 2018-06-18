@@ -80,6 +80,15 @@ $(function() {
     }
   };
 
+  $('form#stop-search').submit(function() {
+    var stop_code = $(this).find('#stop-code').val();
+    if (!stop_code) {
+      return false;
+    }
+    window.location = '/stops/' + stop_code;
+    return false;
+  });
+
   if (navigator.geolocation) {
     // Try to use GPS
     navigator.geolocation.getCurrentPosition(showClosestStops, function(error) {
