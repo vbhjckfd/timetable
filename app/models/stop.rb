@@ -2,7 +2,7 @@ require 'nokogiri'
 
 class Stop < ActiveRecord::Base
 
-  TIMETABLE_API_CALL = 'http://82.207.107.126:13541/SimpleRIDE/LAD/SM.WebApi/api/stops/?code=%{code}'
+  TIMETABLE_API_CALL = 'https://api.eway.in.ua/?login=lad.lviv&password=k3NhsvwLDai2ne9fn&function=stops.GetStopInfo&city=lviv&id=%{code}&v=1.2'
 
   acts_as_mappable :default_units => :kms,
                    :default_formula => :flat,
@@ -16,82 +16,58 @@ class Stop < ActiveRecord::Base
   }
 
   def get_timetable
-    all_info = Rails.cache.fetch("stop_timetable/#{self.id}", expires_in: 15.seconds) do
+    #all_info = Rails.cache.fetch("stop_timetable/#{self.id}", expires_in: 15.seconds) do
       self.get_timetable_from_api
-    end
+    #end
   end
 
   def get_timetable_from_api
     timetable = []
 
-    url = TIMETABLE_API_CALL % {code: self.code.to_s.rjust(4, '0')}
-    raw_data = %x(curl --max-time 30 --silent "#{url}" -H "Accept: application/xml")
+    url = TIMETABLE_API_CALL % {code: self.easyway_id}
+    raw_data = %x(curl --max-time 30 --silent "#{url}" -H "Accept: application/json")
 
-    n = Nokogiri::XML(raw_data)
     begin
-      data = JSON.parse(n.remove_namespaces!.xpath('//string').text)
+      data = JSON.parse(raw_data).symbolize_keys![:routes]
     rescue JSON::ParserError => e
       data = []
     end
 
-    data.delete_if { |item| [0, 2].include? item['State'] }
-    data.sort! { |a,b| a['TimeToPoint'] <=> b['TimeToPoint'] }
+    data = data.map {|i| i.symbolize_keys!}
+    data
+      .select! { |s| s[:timeSource] == 'gps' }
+      .sort! { |a,b| a[:timeLeft] <=> b[:timeLeft] }
 
     directions = {};
 
     data.slice(0, 10).each do |item|
       vehicle_type = case
-      when item['RouteName'].start_with?('Трол.')
-        :trol
-      when item['RouteName'].start_with?('Трам.')
-        :tram
-      else
-        :bus
+        when item[:transportKey] == 'trol'
+          :trol
+        when item[:transportKey] == 'tram'
+          :tram
+        else
+          :bus
       end
 
-      # Ugly, but it looks like data from API is 30sec late from reality
-      item["TimeToPoint"] = item["TimeToPoint"] - 30;
-      item["TimeToPoint"] = 0 if item["TimeToPoint"] < 0
+      prefix = 'A'
+      prefix = 'T' if (['trol', 'tram'].include?(item[:transportKey]))
 
-      directions[item['RouteId']] = item['IterationEnd'] unless directions.key? item['RouteId']
+      directions[item[:id]] = item[:directionTitle] unless directions.key? item[:id]
 
       timetable << {
-        route: strip_route(item["RouteName"]),
+        route: prefix + item[:title],
         vehicle_type: vehicle_type,
-        lowfloor: !!item["LowFloor"],
-        end_stop: directions[item['RouteId']],
-        time_left: round_time(item["TimeToPoint"]),
-        longitude: item['X'],
-        latitude: item['Y'],
-        number: item['VehicleName'].gsub(/\s+/, '')
+        lowfloor: item[:handicapped],
+        end_stop: directions[item[:id]],
+        time_left: item[:timeLeftFormatted],
+        longitude: 0,
+        latitude: 0,
+        number: 0
       }
     end
 
     timetable
-  end
-
-  private
-
-  def strip_route(title)
-    map = [
-      [/^(\D+)([0-9]{1,2})(\D+)$/, '\1\2'], # Remove all except type and route number
-      ['Нічний', ''],
-      ['Трам.', 'T'],
-      ['Трол.', 'T'],
-      ['А', 'A'],
-      [/^([T|A]{1})([0-9]{2})$/, '\1 \2'], # Add space
-    ];
-
-    map.each{|item| title.gsub!(item[0], item[1]) }
-    title
-  end
-
-  def round_time(time)
-    time = Time.at(time).utc
-    return '< 1 хв' if time.to_i < 31
-
-    disp_time = time + (time.sec > 30 ? 1 : 0).minute
-    disp_time.strftime("%-M хв")
   end
 
 end
