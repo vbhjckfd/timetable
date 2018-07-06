@@ -22,7 +22,7 @@ class Api::StopController < ApplicationController
 
   def closest
     coords = params.slice(:longitude, :latitude)
-    accuracy = 300
+    accuracy = 500
     render(status: :bad_request, text: "No coordinates provided (longitude, latitude)") if coords.count != 2
 
     point = Geokit::LatLng.new(params[:latitude].to_f.round(3), params[:longitude].to_f.round(3));

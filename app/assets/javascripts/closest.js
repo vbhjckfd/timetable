@@ -1,44 +1,61 @@
 "use strict"
 
-$(function() {
+var initMap = function() {
   var stop_markers = {};
   var map;
 
-  var initMap = function() {
+  var createMap = function() {
     if ('undefined' !== typeof map) {
       return;
     }
 
     $('div#map').show();
 
-    map = L.map('map', {
-      center: [0, 0]
+    map = new google.maps.Map(document.getElementById('map'), {
+      center: {lat: 49.840733, lng: 24.028164},
+      zoom: 18,
+      streetViewControl: false,
+      fullscreenControl: false,
+      mapTypeControl: false,
+      zoomControlOptions: {
+          position: google.maps.ControlPosition.TOP_LEFT
+      },
     });
-    L.tileLayer('//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
-    map.on('moveend', function(e) {
-      var center, code, marker;
+    var refreshStops = function() {
+        var center, code, marker;
 
-      if (e.target.getZoom() < 16) {
-        for (code in stop_markers) {
-          marker = stop_markers[code];
-          e.target.removeLayer(marker);
+        if (map.getZoom() < 17) {
+          for (code in stop_markers) {
+            marker = stop_markers[code];
+            marker.setMap(null);
+          }
+          stop_markers = {};
+          return;
         }
-        stop_markers = {};
-        return;
-      }
 
-      center = e.target.getCenter();
-      return $.ajax({
-        url: 'api/closest',
-        data: {
-          longitude: center.lng,
-          latitude: center.lat
-        }
-      }).done(function(data) {
-        return showMap(null, data);
-      });
-    });
+        center = map.getCenter();
+        $.ajax({
+          url: 'api/closest',
+          data: {
+            longitude: center.lng(),
+            latitude: center.lat()
+          }
+        }).done(function(data) {
+          return showMap(null, data);
+        });
+
+        var state = {
+          lng: center.lng(),
+          lat: center.lat(),
+          z: map.getZoom()
+        };
+
+        history.pushState(state, null, '?' + jQuery.param(state));
+    };
+
+    map.addListener('dragend', refreshStops);
+    map.addListener('zoom_changed', refreshStops);
   }
 
   var showCityCenter = function() {
@@ -48,16 +65,24 @@ $(function() {
   }
 
   var showClosestStops = function(position) {
-    showMap([position.coords.latitude, position.coords.longitude]);
+    showMap({lat: position.coords.latitude, lng: position.coords.longitude});
     $('img#spinner').hide();
   };
 
   var showMap = function(me, stops) {
-    initMap();
+    createMap();
 
     if (me) {
-      map.setZoom(17).panTo(me);
-      L.marker(me).addTo(map);
+      map.panTo(me);
+
+      var meMarker = new google.maps.Marker({
+        position: me,
+        map: map,
+        icon: {
+          url: 'http://i.imgur.com/fyrG0CJ.png',
+          anchor: new google.maps.Point(20, 50)
+        }
+      });
     }
 
     if (stops) {
@@ -65,17 +90,19 @@ $(function() {
         if (value.code in stop_markers) {
           return;
         }
-        stop_markers[value.code] = L.marker([value.latitude, value.longitude], {
-          icon: L.icon({
-            iconUrl: 'http://i.imgur.com/fyrG0CJ.png',
-            iconAnchor: [20, 50]
-          }),
-          title: value.code,
-          url: 'stops/' + value.code
-        }).addTo(map);
-        return stop_markers[value.code].on('click', function(e) {
-          return window.location.pathname = e.target.options.url;
+
+        var marker = new google.maps.Marker({
+          position: {lat: value.latitude, lng: value.longitude},
+          title: value.code.toString(),
+          label: value.code.toString()
+        })
+
+        marker.addListener('click', function(e) {
+          return window.location.assign('/stops/' + this.title);
         });
+        marker.setMap(map);
+
+        stop_markers[value.code] = marker;
       });
     }
   };
@@ -108,4 +135,4 @@ $(function() {
   }
 
 
-});
+}
