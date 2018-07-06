@@ -32,11 +32,11 @@ class Stop < ActiveRecord::Base
     rescue JSON::ParserError => e
       data = []
     end
+    data ||= []
 
     data = data.map {|i| i.symbolize_keys!}
-    data
-      .select! { |s| s[:timeSource] == 'gps' }
-      .sort! { |a,b| a[:timeLeft] <=> b[:timeLeft] }
+    data.select! { |s| s[:timeSource] == 'gps' }
+    data.sort! { |a,b| a[:timeLeft] <=> b[:timeLeft] }
 
     directions = {};
 
