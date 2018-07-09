@@ -1,5 +1,3 @@
-require 'nokogiri'
-
 class Stop < ActiveRecord::Base
 
   TIMETABLE_API_CALL = 'https://api.eway.in.ua/?login=lad.lviv&password=k3NhsvwLDai2ne9fn&function=stops.GetStopInfo&city=lviv&id=%{code}&v=1.2'
@@ -16,9 +14,9 @@ class Stop < ActiveRecord::Base
   }
 
   def get_timetable
-    #all_info = Rails.cache.fetch("stop_timetable/#{self.id}", expires_in: 15.seconds) do
+    all_info = Rails.cache.fetch("stop_timetable/#{self.id}", expires_in: 15.seconds) do
       self.get_timetable_from_api
-    #end
+    end
   end
 
   def get_timetable_from_api
