@@ -14,7 +14,7 @@ class Stop < ActiveRecord::Base
   }
 
   def get_timetable
-    all_info = Rails.cache.fetch("stop_timetable/#{self.id}", expires_in: 15.seconds) do
+    all_info = Rails.cache.fetch("stop_timetable/#{self.id}", expires_in: 30.seconds) do
       self.get_timetable_from_api
     end
   end
@@ -34,7 +34,7 @@ class Stop < ActiveRecord::Base
 
     data = data.map {|i| i.symbolize_keys!}
     data.select! { |s| s[:timeSource] == 'gps' }
-    data.sort! { |a,b| a[:timeLeft] <=> b[:timeLeft] }
+    data.sort! { |a,b| a[:timeLeft].to_i <=> b[:timeLeft].to_i }
 
     directions = {};
 
