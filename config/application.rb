@@ -2,6 +2,10 @@ require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
 
+require 'rack/throttle'
+
+require 'redis'
+
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
@@ -24,5 +28,7 @@ module Timetable
     config.active_record.raise_in_transactional_callbacks = true
 
     config.allow_concurrency = false
+
+    config.middleware.use Rack::Throttle::Hourly, :max => 30, :cache => Redis.new, :key_prefix => :throttle
   end
 end

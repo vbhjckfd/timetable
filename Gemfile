@@ -30,6 +30,10 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem 'geokit-rails'
 
+gem 'redis', '~> 4.0', '>= 4.0.1'
+
+gem 'rack-throttle', '~> 0.5.0'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
