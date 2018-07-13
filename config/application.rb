@@ -29,6 +29,6 @@ module Timetable
 
     config.allow_concurrency = false
 
-    config.middleware.use Rack::Throttle::Hourly, :max => 30, :cache => Redis.new, :key_prefix => :throttle
+    config.middleware.use Rack::Throttle::Hourly, :max => 6 * 30, :cache => Redis.new, :key_prefix => :throttle
   end
 end

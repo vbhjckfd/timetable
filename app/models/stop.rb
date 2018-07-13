@@ -14,7 +14,7 @@ class Stop < ActiveRecord::Base
   }
 
   def get_timetable
-    all_info = Rails.cache.fetch("stop_timetable/#{self.id}", expires_in: 30.seconds) do
+    all_info = Rails.cache.fetch("stop_timetable/#{self.id}", expires_in: 1.minute) do
       self.get_timetable_from_api
     end
   end
