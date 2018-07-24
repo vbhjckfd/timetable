@@ -11,15 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180706143218) do
+ActiveRecord::Schema.define(version: 20180724123415) do
 
   create_table "routes", force: :cascade do |t|
     t.string   "name"
     t.string   "code"
     t.string   "external_id"
     t.integer  "stops_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.string   "vehicle_type"
   end
 
   add_index "routes", ["stops_id"], name: "index_routes_on_stops_id"

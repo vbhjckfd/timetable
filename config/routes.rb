@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
   root 'stops#closest'
 
-  resources :stops, only: [:index, :show]
+  resources :stops, only: [:show]
 
   namespace :api do
     get 'stops/:id' => 'stop#show'
