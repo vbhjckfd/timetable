@@ -9,6 +9,8 @@ class FillRoutesWithType < ActiveRecord::Migration
 
       if r.name.start_with? 'Тр'
         type = :trol
+      elsif r.name.start_with? 'Нічний'
+        type = :night
       elsif r.name.start_with? 'Т'
         type = :tram
       end

@@ -15,7 +15,12 @@ class Api::StopController < ApplicationController
     timetable = stop.get_timetable
     response = stop.as_json.symbolize_keys.slice(:name, :longitude, :latitude, :code).merge timetable: timetable || []
 
-    response[:routes] = Route.through(stop).map{|r| r.name }
+    response[:routes] = Route.through(stop).map { |r|
+      {
+        name: r.name,
+        type: r.vehicle_type,
+      }
+    }
 
     render json: response
   end
