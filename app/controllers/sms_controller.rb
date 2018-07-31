@@ -35,7 +35,7 @@ class SmsController < ApplicationController
     builder = Nokogiri::XML::Builder.new(:encoding => 'UTF-8') do |xml|
       xml.answer(:type => 'sync') {
         xml.body(:paid => false) {
-          xml.cdata(result.join "\n")
+          xml.cdata (result.count > 0) ? result.join("\n") : "Зв'язок з сервером втрачено. Працюємо над відновленням"
         }
       }
     end
