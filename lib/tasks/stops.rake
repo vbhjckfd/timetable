@@ -109,6 +109,7 @@ namespace :stops do
 
   def import_gtfs_static
     content = open('http://track.ua-gis.com/iTrack/conn_apps/gtfs/static/get')
+    p 'Downloaded'
     #content = open('/Users/mholyak/Downloads/feed.zip')
     
     data = {
@@ -139,10 +140,14 @@ namespace :stops do
         end
       end
     end
+    p 'Unzipped'
 
     data[:stops].each {|k, stop| import_stop stop }
+    p 'Imported stops'
     data[:routes].each {|k, route| import_route route }
+    p 'Imported routes'
     import_route_stops data[:trips], data[:stop_times]
+    p 'Imported route stops'
   end
 
   # def import_vehicle_position
