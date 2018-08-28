@@ -6,41 +6,41 @@ namespace :import do
     end
   end
 
-  def import_stops
-    stops = []
+  # def import_stops
+  #   stops = []
 
-    iterate_over_url "http://82.207.107.126:13541/SimpleRIDE/LAD/SM.WebApi/api/stops" do |item|
-      stops << item
-    end
+  #   iterate_over_url "http://82.207.107.126:13541/SimpleRIDE/LAD/SM.WebApi/api/stops" do |item|
+  #     stops << item
+  #   end
 
-    stops.each do |item|
-      item[:Code] = item[:Code].trimzero
+  #   stops.each do |item|
+  #     item[:Code] = item[:Code].trimzero
 
-      begin
-        Integer(item[:Code])
-      rescue
-        p "Code #{item[:Code]} for #{item[:Name]} is bad value"
-        next
-      end
+  #     begin
+  #       Integer(item[:Code])
+  #     rescue
+  #       p "Code #{item[:Code]} for #{item[:Name]} is bad value"
+  #       next
+  #     end
 
-      stop = Stop.find_or_initialize_by(external_id: item[:Id])
+  #     stop = Stop.find_or_initialize_by(external_id: item[:Id])
 
-      stop.code = item[:Code]
-      stop.name = item[:Name]
-      stop.longitude = item[:X]
-      stop.latitude = item[:Y]
+  #     stop.code = item[:Code]
+  #     stop.name = item[:Name]
+  #     stop.longitude = item[:X]
+  #     stop.latitude = item[:Y]
 
-      # # Skip ugly stop on edge of the city
-      # next if stop.external_id == 45592;
-      #
-      # # If this stop is not in Lviv - skip it
-      # if stop.code.to_i > 803
-      #   next
-      # end
+  #     # # Skip ugly stop on edge of the city
+  #     # next if stop.external_id == 45592;
+  #     #
+  #     # # If this stop is not in Lviv - skip it
+  #     # if stop.code.to_i > 803
+  #     #   next
+  #     # end
 
-      stop.save
-    end
-  end
+  #     stop.save
+  #   end
+  # end
 
   def import_routes
     routes = []
