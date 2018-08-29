@@ -98,8 +98,8 @@ namespace :stops do
   end
 
   def import_gtfs_static
-    #content = open('http://track.ua-gis.com/iTrack/conn_apps/gtfs/static/get')
-    content = open('/Users/mholyak/Downloads/feed.zip')
+    content = open('http://track.ua-gis.com/iTrack/conn_apps/gtfs/static/get')
+    # content = open('/Users/mholyak/Downloads/feed.zip')
 
     Zip::File.open_buffer(content) do |zip|
       data = {
