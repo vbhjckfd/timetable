@@ -93,6 +93,7 @@ namespace :stops do
         route.stops << stop if stop
       end
 
+      route.save
       p route.name
     end
   end
