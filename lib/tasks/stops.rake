@@ -130,10 +130,11 @@ namespace :stops do
       routes_stops = {}
       data[:stop_times].each do |trip_id, stops|
         route_id = data[:trips][trip_id]
-        next if routes_stops.has_key? route_id
+        routes_stops[route_id] = {} unless routes_stops.has_key? route_id
 
-        routes_stops[route_id] = stops.keys
+        routes_stops[route_id].merge! stops
       end
+      routes_stops.each {|k, v| routes_stops[k] = v.keys }
 
       data = nil # Save as much memory as we can
 
