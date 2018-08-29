@@ -82,18 +82,8 @@ namespace :stops do
     #p [route.name, row[:route_short_name]]
   end
 
-  def import_route_stops(trips, stop_times)
-    stop_per_route = {}
-    trips.each do |id, trip| 
-      stop_per_route[trip[:route_id]] = [] unless stop_per_route.has_key? trip[:route_id]
-
-      stop_times[id].each do |stop_time|
-        stop_per_route[trip[:route_id]] << stop_time[:stop_id]
-      end
-      stop_per_route[trip[:route_id]].uniq!
-    end
-
-    stop_per_route.each do |route_id, stops|
+  def import_route_stops(stops_per_route)
+    stops_per_route.each do |route_id, stops|
       route = Route.find_by(external_id: route_id)
       route.stops.clear
       route.stops = []
@@ -108,18 +98,15 @@ namespace :stops do
   end
 
   def import_gtfs_static
-    content = open('http://track.ua-gis.com/iTrack/conn_apps/gtfs/static/get')
-    p 'Downloaded'
-    #content = open('/Users/mholyak/Downloads/feed.zip')
-    
-    data = {
-      stops: {},
-      routes: {},
-      trips: {},
-      stop_times: {},
-    }
+    #content = open('http://track.ua-gis.com/iTrack/conn_apps/gtfs/static/get')
+    content = open('/Users/mholyak/Downloads/feed.zip')
 
     Zip::File.open_buffer(content) do |zip|
+      data = {
+        trips: {},
+        stop_times: {},
+      }
+
       zip.each do |entry|
         content = entry.get_input_stream.read
 
@@ -128,26 +115,30 @@ namespace :stops do
 
           case entry.name
           when 'stops.txt'
-            data[:stops][row[:stop_id]] = row
+            import_stop row
           when 'routes.txt'
-            data[:routes][row[:route_id]] = row
+            import_route row
           when 'trips.txt'
-            data[:trips][row[:trip_id]] = row
+            data[:trips][row[:trip_id]] = row[:route_id]
           when 'stop_times.txt'
-            data[:stop_times][row[:trip_id]] = [] unless data[:stop_times].has_key? row[:trip_id]
-            data[:stop_times][row[:trip_id]] << row
+            data[:stop_times][row[:trip_id]] = {} unless data[:stop_times].has_key? row[:trip_id]
+            data[:stop_times][row[:trip_id]][row[:stop_id]] = true
           end
         end
       end
-    end
-    p 'Unzipped'
 
-    data[:stops].each {|k, stop| import_stop stop }
-    p 'Imported stops'
-    data[:routes].each {|k, route| import_route route }
-    p 'Imported routes'
-    import_route_stops data[:trips], data[:stop_times]
-    p 'Imported route stops'
+      routes_stops = {}
+      data[:stop_times].each do |trip_id, stops|
+        route_id = data[:trips][trip_id]
+        next if routes_stops.has_key? route_id
+
+        routes_stops[route_id] = stops.keys
+      end
+
+      data = nil # Save as much memory as we can
+
+      import_route_stops routes_stops
+    end
   end
 
   # def import_vehicle_position
