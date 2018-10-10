@@ -66,14 +66,15 @@ namespace :stops do
     # {:route_id=>"1002", :agency_id=>"52", :route_short_name=>"\xD0\x9005", :route_long_name=>"\xD0\x9C\xD0\xB0\xD1\x80\xD1\x88\xD1\x80\xD1\x83\xD1\x82 \xE2\x84\x96\xD0\x9005 (\xD0\xBC. \xD0\x92\xD0\xB8\xD0\xBD\xD0\xBD\xD0\xB8\xD0\xBA\xD0\xB8 - \xD0\xBF\xD0\xBB. \xD0\xA0\xD1\x96\xD0\xB7\xD0\xBD\xD1\x96)-\xD1\x80\xD0\xB5\xD0\xBC", :route_type=>"3", :route_desc=>nil, :route_url=>nil, :route_color=>nil, :route_text_color=>nil}
 
     route = Route.find_or_initialize_by(external_id: row[:route_id])
-    route.name = row[:route_long_name].force_encoding("UTF-8")
-    row[:route_short_name] = row[:route_short_name].force_encoding("UTF-8")
+    [:route_short_name, :route_long_name].each {|k| row[k] = row[k].force_encoding("UTF-8") }
+    p [row[:route_short_name], row[:route_long_name]]
+    route.name = "#{row[:route_short_name]}: #{row[:route_long_name]}"
 
     route.vehicle_type = case row[:route_type]
       when '0'
         :tram
       when '3'
-        route.name.start_with?('Маршрут №Тр') ? :trol : :bus
+        route.name.start_with?('Тр') ? :trol : :bus
       else
         :bus
     end
@@ -94,13 +95,14 @@ namespace :stops do
       end
 
       route.save
-      p route.name
+
+      #p [route.name, route.stops.count]
     end
   end
 
   def import_gtfs_static
-    content = open('http://track.ua-gis.com/iTrack/conn_apps/gtfs/static/get')
-    # content = open('/Users/mholyak/Downloads/feed.zip')
+    content = open('http://track.ua-gis.com/gtfs/lviv/static.zip')
+    #content = open('/Users/mholyak/Downloads/static.zip')
 
     Zip::File.open_buffer(content) do |zip|
       data = {
@@ -111,7 +113,7 @@ namespace :stops do
       zip.each do |entry|
         content = entry.get_input_stream.read
 
-        CSV.parse(content, headers: true) do |row|
+        CSV.parse(content, headers: true, quote_char: "\x00") do |row|
           row = row.to_hash.symbolize_keys
 
           case entry.name
