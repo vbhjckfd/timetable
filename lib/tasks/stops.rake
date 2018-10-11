@@ -40,6 +40,10 @@ namespace :stops do
     # {:stop_id=>"5129", :stop_code=>"153", :stop_name=>"\xD0\x90\xD0\xB5\xD1\x80\xD0\xBE\xD0\xBF\xD0\xBE\xD1\x80\xD1\x82", :stop_desc=>nil, :stop_lat=>"49.812833637475", :stop_lon=>"23.96170735359192", :zone_id=>"lviv_city", :stop_url=>nil, :location_type=>"0", :parent_station=>nil, :stop_timezone=>nil, :wheelchair_boarding=>"0"}
     row[:stop_name] = row[:stop_name].force_encoding("UTF-8")
 
+    code = row[:stop_code].to_s.force_encoding("UTF-8")
+    row[:stop_name].sub!('""', '"')
+    ["00#{code}", "0#{code}", code, '()', '" "', /^"{1}/ , /\s+$/].map {|s| row[:stop_name].sub!(s, '') }
+
     return if row[:stop_code].nil?
     row[:stop_code] = row[:stop_code].trimzero
 
@@ -67,7 +71,7 @@ namespace :stops do
 
     route = Route.find_or_initialize_by(external_id: row[:route_id])
     [:route_short_name, :route_long_name].each {|k| row[k] = row[k].force_encoding("UTF-8") }
-    p [row[:route_short_name], row[:route_long_name]]
+
     route.name = "#{row[:route_short_name]}: #{row[:route_long_name]}"
 
     route.vehicle_type = case row[:route_type]
@@ -113,7 +117,7 @@ namespace :stops do
       zip.each do |entry|
         content = entry.get_input_stream.read
 
-        CSV.parse(content, headers: true, quote_char: "\x00") do |row|
+        CSV.parse(content, headers: true, liberal_parsing: true) do |row|
           row = row.to_hash.symbolize_keys
 
           case entry.name
