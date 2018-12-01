@@ -67,7 +67,7 @@ $(function() {
         }
         stop_markers[value.code] = L.marker([value.latitude, value.longitude], {
           icon: L.icon({
-            iconUrl: 'http://i.imgur.com/fyrG0CJ.png',
+            iconUrl: 'https://i.imgur.com/fyrG0CJ.png',
             iconAnchor: [20, 50]
           }),
           title: value.code,
